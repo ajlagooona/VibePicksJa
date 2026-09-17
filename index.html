@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
 
   <style>
     /* ─── Reset & Tokens ─────────────────────────────────────── */
@@ -119,6 +120,14 @@
     }
     .nav-links a:hover { color: var(--brand); }
     .nav-links a.active { color: var(--brand); font-weight: 500; }
+    .nav-cta-btn {
+      background: var(--surface); color: var(--ink);
+      border: 1px solid var(--border-2); border-radius: var(--radius-md);
+      padding: 9px 18px; margin-left: 20px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: var(--transition); white-space: nowrap;
+    }
+    .nav-cta-btn:hover { border-color: var(--ink); background: var(--surface-2); }
     .nav-hamburger {
       display: none; background: none; border: none;
       width: 32px; height: 32px; flex-direction: column;
@@ -177,6 +186,14 @@
       letter-spacing: 1px; text-transform: uppercase;
       color: var(--ink-4); margin-bottom: 14px;
     }
+    /* Doubles as descriptive copy above the category filter strip
+       and a real H2 (moved out of the hero, where it was previously
+       a second hero-sub sentence). */
+    .venues-sub {
+      font-family: var(--font-sans); font-weight: 400;
+      font-size: 15px; color: var(--ink-3); line-height: 1.55;
+      max-width: 620px; margin: -6px 0 18px;
+    }
 
     /* ─── Stars ──────────────────────────────────────────────── */
     .stars { color: var(--amber); font-size: 13px; letter-spacing: 0.5px; }
@@ -187,16 +204,20 @@
       margin-bottom: 20px;
     }
     .cat-pill {
+      display: inline-flex; align-items: center; gap: 7px;
       padding: 7px 16px; border-radius: 20px;
       font-size: 13px; border: 0.5px solid var(--border-2);
       color: var(--ink-3); background: var(--surface);
       transition: var(--transition); cursor: pointer;
     }
+    .cat-pill i { font-size: 15px; color: var(--ink-4); transition: var(--transition); }
     .cat-pill:hover { border-color: var(--brand); color: var(--brand); }
+    .cat-pill:hover i { color: var(--brand); }
     .cat-pill.on {
       background: var(--ink); color: #fff;
       border-color: var(--ink);
     }
+    .cat-pill.on i { color: #fff; }
 
     /* ─── Filter pills ───────────────────────────────────────── */
     .filter-pill {
@@ -262,6 +283,28 @@
     .ss-bar-bg  { flex: 1; height: 4px; background: var(--rose-border); border-radius: 2px; overflow: hidden; }
     .ss-bar-fill { height: 100%; background: var(--rose); border-radius: 2px; }
 
+    /* ─── Amenity icon key (listing cards only — Browse, SafeSpace,
+       Vibe Picker results. Not used on the home mosaic cards.) ─── */
+    .amenity-strip {
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+      margin-top: 10px; padding-top: 10px;
+      border-top: 0.5px solid var(--border);
+    }
+    .amenity-icon {
+      width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--surface-2); color: var(--ink-2); font-size: 12px;
+      cursor: default;
+    }
+    .amenity-icon.off { background: var(--surface-3); color: var(--ink-4); opacity: 0.5; }
+    .amenity-divider { width: 0.5px; height: 18px; background: var(--border-2); margin: 0 2px; flex-shrink: 0; }
+    .amenity-icon.safespace {
+      width: auto; padding: 0 9px; gap: 4px;
+      background: var(--rose-light); color: var(--rose-dark);
+      font-size: 11px; font-weight: 600;
+    }
+    .amenity-icon.safespace.off { background: var(--surface-3); color: var(--ink-4); opacity: 0.7; }
+
     /* ─── Card grid ──────────────────────────────────────────── */
     .card-grid {
       display: grid;
@@ -269,9 +312,251 @@
       gap: 16px;
     }
 
+    /* ─── HOME: Listings — Immersive full-bleed magazine mosaic ───
+       Hero card tall on the left, two compact cards stacked right.
+       Inspired by Eater / Time Out / Instagram Explore.
+       ─────────────────────────────────────────────────────────── */
+    .mosaic-grid { display: flex; flex-direction: column; gap: 16px; }
+    /* Deliberate breathing room between a block of cards and whatever
+       editorial strip (SafeSpace / Tastemaker) follows it — otherwise
+       the strip's coloured band butts straight up against the cards. */
+    .mosaic-section { margin-bottom: 32px; }
+    .mosaic-block {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      grid-template-rows: repeat(2, minmax(150px, 1fr));
+      gap: 14px;
+      height: 420px;
+    }
+    .mosaic-block.single { grid-template-columns: 1fr; height: 320px; }
+
+    .mosaic-card {
+      position: relative;
+      grid-column: 2;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: pointer;
+      background-size: cover;
+      background-position: center;
+      transition: var(--transition);
+    }
+    .mosaic-card:hover { transform: scale(1.012); box-shadow: var(--shadow-md); }
+    .video-card:hover { transform: none; box-shadow: none; } /* not a link — no hover-lift affordance */
+    .mosaic-card.hero { grid-column: 1; grid-row: 1 / 3; }
+    .mosaic-block.single .mosaic-card.hero { grid-column: 1; grid-row: 1; }
+    .mosaic-card.compact.fill { grid-row: 1 / 3; }
+
+    .mosaic-scrim {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 38%, rgba(0,0,0,0.78) 100%);
+      pointer-events: none;
+    }
+    /* Rotating photo layer — sits behind the scrim, crossfades between
+       a venue's supplied photos every 8s (see startPhotoRotation in
+       app.js). Falls back to the card's flat colour if no photos. */
+    .mosaic-photo-layer { position: absolute; inset: 0; overflow: hidden; }
+    .mosaic-photo-img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      opacity: 0; will-change: opacity;
+      transition: opacity 2s ease-in-out;
+    }
+    .mosaic-photo-img.front { opacity: 1; }
+
+    /* ─── Tastemaker-of-the-month video block ──────────────────
+       A landscape video doesn't belong in the tall portrait hero
+       slot (huge letterbox bars), so a block containing the video
+       feature uses its own shape: a wide 16:9 banner on top, with
+       the other two venues from that block sitting side by side
+       underneath instead of stacked beside it. ─────────────────── */
+    .mosaic-block.video-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      height: auto;
+    }
+    .mosaic-block.video-block .video-card {
+      grid-column: 1 / 3;
+      aspect-ratio: 16 / 9;
+      cursor: default; /* not a link — only its own controls are interactive */
+    }
+    .mosaic-block.video-block .mosaic-card.compact {
+      grid-column: span 1;
+      height: 210px;
+    }
+
+    /* True letterboxing — the video is shown in full, uncropped,
+       with black bars filling any leftover space rather than being
+       scaled/cropped to fill the card. */
+    .video-embed-wrap {
+      position: absolute; inset: 0; overflow: hidden;
+      background: #000; pointer-events: none;
+    }
+    .video-embed-iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+    }
+    .video-mute-btn {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(255,255,255,0.92); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink-3); font-size: 14px; transition: var(--transition);
+    }
+    .video-mute-btn:hover { color: var(--ink); }
+
+    .video-info { padding-bottom: 12px; }
+    .video-controls {
+      display: flex; align-items: center; gap: 10px;
+      margin-top: 10px;
+    }
+    .video-play-btn {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(255,255,255,0.92); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink); font-size: 11px; transition: var(--transition);
+    }
+    .video-play-btn:hover { background: #fff; }
+    .video-progress-track {
+      flex: 1; height: 4px; border-radius: 2px; cursor: pointer;
+      background: rgba(255,255,255,0.32);
+    }
+    .video-progress-fill {
+      height: 100%; width: 0%; border-radius: 2px;
+      background: var(--amber); transition: width 0.3s linear;
+    }
+    .video-time {
+      font-size: 10.5px; color: rgba(255,255,255,0.85);
+      white-space: nowrap; font-variant-numeric: tabular-nums;
+    }
+
+    .mosaic-top-badges {
+      position: absolute; top: 10px; left: 10px; right: 10px; z-index: 2;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+    }
+    .mosaic-badges-right { display: flex; align-items: flex-start; gap: 8px; margin-left: auto; }
+    .mosaic-chosen-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--amber); color: #fff;
+      font-size: 10px; font-weight: 600; padding: 4px 10px; border-radius: 10px;
+    }
+    .mosaic-vibe-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(255,255,255,0.95); color: var(--brand);
+      font-size: 10px; font-weight: 600; padding: 4px 10px; border-radius: 10px;
+    }
+    .mosaic-heart {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(255,255,255,0.92); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink-3); font-size: 14px; transition: var(--transition);
+    }
+    .mosaic-heart.saved { color: var(--rose); }
+    .mosaic-ss-badge {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(255,255,255,0.95); box-shadow: var(--shadow-sm);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .mosaic-ss-badge .num { font-size: 13px; font-weight: 700; line-height: 1; color: var(--ink-4); }
+    .mosaic-ss-badge .lbl { font-size: 6.5px; color: var(--ink-4); text-transform: uppercase; letter-spacing: 0.3px; }
+    .mosaic-ss-badge.high .num { color: var(--brand); }
+    .mosaic-ss-badge.mid .num { color: var(--amber-dark); }
+
+    .mosaic-info {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+      padding: 14px 16px; color: #fff;
+    }
+    .mosaic-name { font-size: 16px; font-weight: 600; line-height: 1.25; }
+    .mosaic-card.hero .mosaic-name { font-size: 21px; }
+    .mosaic-meta { font-size: 11.5px; color: rgba(255,255,255,0.85); margin-top: 2px; }
+    .mosaic-rating { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: rgba(255,255,255,0.9); margin-top: 6px; }
+    .mosaic-rating .stars { color: var(--amber); }
+    .mosaic-tags { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+
+    @media (max-width: 720px) {
+      .mosaic-block, .mosaic-block.single {
+        grid-template-columns: 1fr; grid-template-rows: none; height: auto;
+      }
+      .mosaic-card, .mosaic-card.hero, .mosaic-card.compact.fill {
+        grid-column: 1; grid-row: auto; height: 230px;
+      }
+      .mosaic-card.hero { height: 280px; }
+
+      .mosaic-block.video-block { grid-template-columns: 1fr; }
+      .mosaic-block.video-block .video-card { grid-column: 1; }
+      .mosaic-block.video-block .mosaic-card.compact { grid-column: 1; height: 200px; }
+    }
+
+    /* ─── HOME: Editorial strips ─────────────────────────────────
+       Curated collections (SafeSpace picks, Tastemaker picks) that
+       give the homepage a point of view, distinct from the venue
+       grid above — the difference between a directory and a
+       discovery platform.
+       ─────────────────────────────────────────────────────────── */
+    .editorial-strip {
+      border-radius: var(--radius-xl);
+      padding: 32px 0 28px;
+      margin-bottom: 24px;
+    }
+    .ss-strip-section { background: var(--rose-light); }
+    .tm-strip-section { background: var(--amber-light); }
+
+    .editorial-strip-head {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap; margin-bottom: 18px; padding: 0 32px;
+    }
+    .editorial-strip-eyebrow {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .ss-strip-section .editorial-strip-eyebrow { color: var(--rose); }
+    .tm-strip-section .editorial-strip-eyebrow { color: var(--amber-dark); }
+    .editorial-strip-title { font-family: var(--font-serif); font-size: 22px; color: var(--ink); }
+    .editorial-strip-sub { font-size: 13px; color: var(--ink-3); margin-top: 4px; max-width: 480px; }
+    .editorial-strip-link {
+      display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+      background: none; border: none; font-size: 13px; font-weight: 500; cursor: pointer;
+      transition: var(--transition);
+    }
+    .ss-strip-section .editorial-strip-link { color: var(--rose-dark); }
+    .tm-strip-section .editorial-strip-link { color: var(--amber-dark); }
+    .editorial-strip-link:hover { text-decoration: underline; }
+
+    .editorial-scroll {
+      display: flex; gap: 14px; overflow-x: auto;
+      padding: 4px 32px 8px; scroll-snap-type: x proximity;
+    }
+    .editorial-card {
+      position: relative; flex: 0 0 210px; height: 250px;
+      border-radius: var(--radius-lg); overflow: hidden; cursor: pointer;
+      background-size: cover; background-position: center;
+      scroll-snap-align: start; transition: var(--transition);
+    }
+    .editorial-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .editorial-badge {
+      position: absolute; top: 10px; left: 10px; z-index: 2;
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; font-weight: 600; padding: 4px 9px; border-radius: 10px;
+    }
+    .editorial-badge.ss { background: rgba(255,255,255,0.95); color: var(--rose-dark); }
+    .editorial-badge.tm { background: var(--amber); color: #fff; }
+    .editorial-info {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+      padding: 12px 14px; color: #fff;
+    }
+    .editorial-name { font-size: 14px; font-weight: 600; line-height: 1.25; }
+    .editorial-meta { font-size: 11px; color: rgba(255,255,255,0.85); margin-top: 2px; }
+
+    @media (max-width: 600px) {
+      .editorial-strip-head { padding: 0 20px; }
+      .editorial-scroll { padding: 4px 20px 8px; }
+    }
+
     /* ─── HOME: Hero ─────────────────────────────────────────── */
     .hero-section {
-      padding: 64px 0 48px;
+      padding: 48px 0 16px;
       text-align: center;
     }
     .hero-eyebrow {
@@ -324,16 +609,20 @@
       color: #F2C94C;
       font-size: 11px;
     }
-    .hero-title em:hover .mood-word::before {
+    /* Hover triggers directly off .mood-word now (not off a parent
+       <em>) since "mood" no longer needs to sit inside the italic
+       green span — the sparkle effect should work regardless of
+       which line/style wraps it. */
+    .mood-word:hover::before {
       animation: sparkleTwinkle 2.8s ease-in-out infinite;
     }
-    .hero-title em:hover .mood-word::after {
+    .mood-word:hover::after {
       animation: sparkleTwinkle 2.8s ease-in-out 1.1s infinite;
     }
-    .hero-title em:hover .mood-spark {
+    .mood-word:hover .mood-spark {
       animation: sparkleTwinkle 2.8s ease-in-out 0.55s infinite;
     }
-    .hero-title em:hover .mood-spark.second {
+    .mood-word:hover .mood-spark.second {
       animation-delay: 1.55s;
     }
     @keyframes sparkleTwinkle {
@@ -342,10 +631,9 @@
       64% { opacity: 0.25; transform: scale(0.85) rotate(24deg); }
     }
     .hero-sub {
-      font-size: 11px; color: var(--brand);
-      max-width: 720px; margin: 0 auto 32px;
-      line-height: 1.6; font-weight: 500;
-      letter-spacing: 1.5px; text-transform: uppercase;
+      font-size: 17px; color: var(--ink-3);
+      max-width: 560px; margin: 0 auto 32px;
+      line-height: 1.6; font-weight: 400;
       text-align: center;
     }
     .hero-actions {
@@ -353,14 +641,14 @@
     }
     .hero-stats {
       display: flex; align-items: center; justify-content: center;
-      margin: 28px auto 8px;
+      margin: 18px auto 0;
       max-width: 620px;
     }
     .stat-card {
       flex: 1;
       min-width: 0;
       display: flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 14px 18px;
+      padding: 10px 18px;
       text-align: left;
     }
     .stat-card + .stat-card {
@@ -401,16 +689,17 @@
 
     /* ─── How it works ───────────────────────────────────────── */
     .how-it-works {
-      padding: 24px 0 34px;
-      margin-bottom: 40px;
+      padding: 4px 0 20px;
+      margin-bottom: 24px;
     }
-    .how-it-works .sec-label {
-      text-align: center;
+    .hiw-main-title {
+      font-family: var(--font-serif); font-size: 28px; color: var(--ink);
+      text-align: center; max-width: 640px; margin: 0 auto;
     }
     .hiw-grid {
       position: relative;
       display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 28px; margin-top: 20px;
+      gap: 28px; margin-top: 14px;
     }
     .hiw-route-line {
       position: absolute;
@@ -434,8 +723,25 @@
       width: 84%;
       justify-self: center;
       background: var(--surface-2);
+      border: 1.5px solid transparent;
       border-radius: var(--radius-lg);
-      padding: 16px;
+      padding: 14px;
+    }
+    /* Differentiates Step 1 as the entry point — a subtle visual
+       cue that this is where the flow begins, without extra copy. */
+    .hiw-card.start-here { border-color: var(--brand); background: var(--brand-light); }
+    .hiw-start-label {
+      display: block; text-align: center;
+      font-size: 10px; font-weight: 600; color: var(--brand-dark);
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin-bottom: 6px;
+    }
+    .hiw-maps-badge {
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      margin-top: 10px; font-size: 10.5px; font-weight: 500; color: var(--ink-3);
+      background: var(--surface); border: 0.5px solid var(--border-2);
+      padding: 4px 9px; border-radius: 8px; width: max-content;
+      margin-left: auto; margin-right: auto;
     }
     .hiw-step {
       display: flex; align-items: center; gap: 7px;
@@ -448,7 +754,7 @@
       font-size: 11px; font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 0.7px;
-      margin: 0 auto 14px;
+      margin: 0 auto 10px;
     }
     .hiw-step-num {
       width: 26px; height: 26px; border-radius: 50%;
@@ -456,8 +762,8 @@
       font-size: 12px; font-weight: 500;
       display: flex; align-items: center; justify-content: center;
     }
-    .hiw-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; text-align: center; }
-    .hiw-body  { font-size: 13px; color: var(--ink-3); line-height: 1.6; text-align: center; }
+    .hiw-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; text-align: center; }
+    .hiw-body  { font-size: 12.5px; color: var(--ink-3); line-height: 1.5; text-align: center; }
 
     /* ─── VIBE QUIZ ──────────────────────────────────────────── */
     .quiz-wrap {
@@ -698,21 +1004,39 @@
       gap: 8px; margin-bottom: 20px;
     }
     .feat-item {
+      position: relative;
       min-height: 78px;
       display: grid; place-items: center; gap: 8px;
       padding: 12px 8px 10px;
-      background: var(--surface-2); border: 0.5px solid transparent;
+      background: var(--green-light); border: 0.5px solid transparent;
       border-radius: var(--radius-md);
       font-size: 12px; font-weight: 500;
-      color: var(--ink-3); text-align: center;
+      color: var(--ink-2); text-align: center;
       transition: var(--transition);
       line-height: 1.2;
+    }
+    .feat-item.off {
+      background: var(--surface-3);
+      color: var(--ink-4);
+      opacity: 0.65;
     }
     .feat-item:hover {
       background: var(--surface);
       border-color: var(--brand-mid);
       box-shadow: var(--shadow-md);
+      opacity: 1;
     }
+    /* Small status dot, corner of every tile — green = available,
+       red = not available. SafeSpace uses the same dot language
+       (green = rated, red = unrated) even though its tile keeps a
+       rose tint regardless, to mark it as a curated score rather
+       than a plain amenity toggle. */
+    .feat-dot {
+      position: absolute; top: 7px; right: 7px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+    }
+    .feat-item.off .feat-dot { background: #E24B4A; }
     .feat-icon {
       width: 30px; height: 30px;
       display: grid; place-items: center;
@@ -722,13 +1046,27 @@
       font-size: 13px; flex-shrink: 0;
     }
     .feat-icon.no  { background: #FDECEC; color: #E24B4A; }
-    .w3w-tag {
+    .feat-item.safespace,
+    .feat-item.safespace.off {
+      background: var(--rose-light);
+      border-color: var(--rose-border);
+      color: var(--rose-dark);
+      opacity: 1;
+    }
+    .feat-item.safespace .feat-icon {
+      background: var(--rose-border);
+      color: var(--rose-dark);
+      font-size: 15px;
+    }
+    .feat-item.safespace.off .feat-dot { background: #E24B4A; }
+    .maps-tag {
       display: inline-flex; align-items: center; gap: 8px;
       background: var(--brand-light); border: 0.5px solid var(--brand-mid);
       border-radius: var(--radius-md); padding: 8px 14px;
-      font-size: 13px; color: var(--brand-deep); margin-bottom: 20px;
+      font-size: 13px; font-weight: 500; color: var(--brand-deep); margin-bottom: 20px;
+      cursor: pointer; transition: var(--transition);
     }
-    .w3w-tag strong { letter-spacing: 0.5px; }
+    .maps-tag:hover { background: var(--brand-mid); border-color: var(--brand); }
     .ss-detail-panel {
       background: var(--rose-light);
       border: 0.5px solid var(--rose-border);
@@ -883,6 +1221,31 @@
     }
     #toast.show { opacity: 1; }
 
+    /* ─── Blog ───────────────────────────────────────────────── */
+    .blog-hero { max-width: 640px; margin-bottom: 32px; }
+    .blog-hero-title { font-family: var(--font-serif); font-size: 32px; color: var(--ink); margin: 4px 0 10px; }
+    .blog-hero-sub { font-size: 14px; color: var(--ink-3); line-height: 1.6; }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px; margin-bottom: 40px;
+    }
+    .blog-card {
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg); overflow: hidden;
+      box-shadow: var(--shadow-sm); cursor: pointer; transition: var(--transition);
+    }
+    .blog-card:hover { border-color: var(--brand); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .blog-banner { height: 140px; }
+    .blog-body { padding: 16px 18px 18px; }
+    .blog-tag {
+      display: inline-block; padding: 3px 10px; border-radius: 20px;
+      font-size: 10.5px; font-weight: 500; margin-bottom: 10px;
+    }
+    .blog-title { font-size: 16px; font-weight: 600; color: var(--ink); line-height: 1.35; margin-bottom: 8px; }
+    .blog-excerpt { font-size: 13px; color: var(--ink-3); line-height: 1.6; margin-bottom: 12px; }
+    .blog-meta { font-size: 11.5px; color: var(--ink-4); }
+
     /* ─── Footer ─────────────────────────────────────────────── */
     #app-footer {
       border-top: 0.5px solid var(--border);
@@ -902,8 +1265,9 @@
     /* ─── Responsive ─────────────────────────────────────────── */
     @media (max-width: 640px) {
       .nav-links { display: none; }
+      .nav-cta-btn { display: none; }
       .nav-hamburger { display: flex; }
-      .hero-section { padding: 40px 0 32px; }
+      .hero-section { padding: 32px 0 12px; }
       .hero-title { font-size: 30px; }
       .hero-stats { flex-direction: column; align-items: stretch; }
       .stat-card + .stat-card { border-left: none; border-top: none; }
@@ -941,6 +1305,7 @@
           <a onclick="showScreen('quiz')"   id="nl-quiz">Vibe picker</a>
           <a onclick="showScreen('ss')"     id="nl-ss">SafeSpace</a>
         </div>
+        <button class="nav-cta-btn" onclick="showScreen('quiz')">Start vibe picker</button>
         <button class="nav-hamburger" aria-label="Open menu" onclick="toggleMobileMenu()">
           <span></span><span></span><span></span>
         </button>
@@ -958,12 +1323,9 @@
         <section class="hero-section" aria-labelledby="hero-h1">
           <p class="hero-eyebrow">Discover your vibe</p>
           <h1 class="hero-title" id="hero-h1">
-            Find the best of Jamaica<br><em>matched to your <span class="mood-word">mood<span class="mood-spark" aria-hidden="true">✦</span><span class="mood-spark second" aria-hidden="true">✦</span></span></em>
+            <em>Find the best of Jamaica,</em><br>matched to your <span class="mood-word">mood<span class="mood-spark" aria-hidden="true">✦</span><span class="mood-spark second" aria-hidden="true">✦</span></span>
           </h1>
-          <p class="hero-sub">
-            Restaurants, lounges, parks, wellness spots and hidden gems
-            across Jamaica.
-          </p>
+          <p class="hero-sub">Not sure where to go or what you're in the mood for? Let us figure that out for you &mdash; answer six quick questions and we'll match you to your perfect Jamaican experience.</p>
           <div class="hero-actions">
             <button class="btn-primary" onclick="showScreen('quiz')">Start vibe picker <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
             <button class="btn-secondary" onclick="showScreen('browse')">Browse all venues <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
@@ -988,12 +1350,13 @@
         </section>
 
         <section class="how-it-works" aria-labelledby="hiw-title">
-          <div class="sec-label">How it works</div>
+          <h2 class="hiw-main-title" id="hiw-title">Find your perfect Jamaica experience in 3 steps</h2>
           <div class="hiw-grid">
             <svg class="hiw-route-line" viewBox="0 0 1000 220" aria-hidden="true" focusable="false">
               <path d="M8 130 C72 72 138 70 166 120 C192 168 116 172 108 126 C100 76 178 48 244 98 C308 146 250 198 202 166 C154 132 200 72 284 74 C382 76 408 144 492 130 C578 116 548 22 482 44 C418 66 430 174 548 170 C656 166 642 54 556 74 C494 90 514 146 610 138 C708 130 728 76 812 92 C888 106 892 162 802 168 C732 172 724 118 804 92 C882 66 938 78 992 118" />
             </svg>
-            <div class="hiw-card">
+            <div class="hiw-card start-here">
+              <span class="hiw-start-label">Start here</span>
               <div class="hiw-step">Step<span class="hiw-step-num">1</span> </div>
               <div class="hiw-title">Pick your vibe</div>
               <div class="hiw-body">Answer 6 quick questions about your occasion, group, location, budget and energy.</div>
@@ -1006,26 +1369,64 @@
             <div class="hiw-card">
               <div class="hiw-step">Step<span class="hiw-step-num">3</span></div>
               <div class="hiw-title">Explore &amp; go</div>
-              <div class="hiw-body">Save your picks, share via WhatsApp and navigate with precise What3Words pins.</div>
+              <div class="hiw-body">Save your picks, share via WhatsApp and get directions instantly.</div>
+              <span class="hiw-maps-badge"><i class="fa-brands fa-google" aria-hidden="true"></i> Google Maps</span>
             </div>
           </div>
         </section>
 
-      
-
-        <section aria-labelledby="home-venues-title">
+        <section class="mosaic-section" aria-labelledby="home-venues-title">
           <div class="sec-label" id="home-venues-title">Top picks across Jamaica</div>
+          <h2 class="venues-sub">Find attractions, beaches, restaurants, parks, wellness and the hidden gems picked based on your current vibe.</h2>
           <div class="cat-strip" id="home-cat-strip" role="group" aria-label="Filter venues by category">
-            <button class="cat-pill on"       onclick="homeFilter('all',   this)">All</button>
-            <button class="cat-pill"          onclick="homeFilter('dining',this)">Dining</button>
-            <button class="cat-pill"          onclick="homeFilter('bar',   this)">Bars &amp; lounges</button>
-            <button class="cat-pill"          onclick="homeFilter('club',  this)">Clubs</button>
-            <button class="cat-pill"          onclick="homeFilter('outdoor',this)">Outdoor</button>
-            <button class="cat-pill"          onclick="homeFilter('wellness',this)">Wellness</button>
-            <button class="cat-pill"          onclick="homeFilter('family',this)">Family</button>
-            <button class="cat-pill"          onclick="homeFilter('park',  this)">Parks</button>
+            <button class="cat-pill on"       onclick="homeFilter('all',   this)"><i class="ti ti-category" aria-hidden="true"></i><span>All</span></button>
+            <button class="cat-pill"          onclick="homeFilter('dining',this)"><i class="ti ti-tools-kitchen-2" aria-hidden="true"></i><span>Dining</span></button>
+            <button class="cat-pill"          onclick="homeFilter('bar',   this)"><i class="ti ti-beer" aria-hidden="true"></i><span>Bars &amp; lounges</span></button>
+            <button class="cat-pill"          onclick="homeFilter('club',  this)"><i class="ti ti-disco-ball" aria-hidden="true"></i><span>Clubs</span></button>
+            <button class="cat-pill"          onclick="homeFilter('outdoor',this)"><i class="ti ti-sun" aria-hidden="true"></i><span>Outdoor</span></button>
+            <button class="cat-pill"          onclick="homeFilter('wellness',this)"><i class="ti ti-yoga" aria-hidden="true"></i><span>Wellness</span></button>
+            <button class="cat-pill"          onclick="homeFilter('family',this)"><i class="ti ti-users" aria-hidden="true"></i><span>Family</span></button>
+            <button class="cat-pill"          onclick="homeFilter('park',  this)"><i class="ti ti-trees" aria-hidden="true"></i><span>Parks</span></button>
           </div>
-          <div class="card-grid" id="home-card-grid"></div>
+          <!-- Block A: Broken Plate hero + Tracks & Records + Hope Gardens,
+               then the Tastemaker-of-the-month video on its own wide block. -->
+          <div class="mosaic-grid" id="home-mosaic-grid-a"></div>
+        </section>
+
+        <section class="editorial-strip ss-strip-section" aria-labelledby="ss-strip-title">
+          <div class="editorial-strip-head">
+            <div>
+              <div class="editorial-strip-eyebrow"><i class="fa-solid fa-shield-heart" aria-hidden="true"></i> Curated by SafeSpace</div>
+              <h2 class="editorial-strip-title" id="ss-strip-title">Top-rated spots selected for solo female travellers</h2>
+              <p class="editorial-strip-sub">Handpicked by women who've actually been there. From solo dinners to group nights out, these are the places they go back to.</p>
+            </div>
+            <button class="editorial-strip-link" onclick="showScreen('ss')">See all SafeSpace picks <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+          </div>
+          <div class="editorial-scroll" id="home-ss-strip"></div>
+        </section>
+
+        <!-- Block B: Scotchies Jerk Centre + Caymanas Park, sandwiched
+             between the two editorial strips. -->
+        <section class="mosaic-section" aria-label="More top picks">
+          <div class="mosaic-grid" id="home-mosaic-grid-b"></div>
+        </section>
+
+        <section class="editorial-strip tm-strip-section" aria-labelledby="tm-strip-title">
+          <div class="editorial-strip-head">
+            <div>
+              <div class="editorial-strip-eyebrow"><i class="fa-solid fa-star" aria-hidden="true"></i> Tastemaker picks</div>
+              <h2 class="editorial-strip-title" id="tm-strip-title">No tourists, no algorithms. Just the people who know Jamaica best</h2>
+              <p class="editorial-strip-sub">Our verified local reviewers don't just recommend these spots, they're regulars. No paid placements, no tourist fluff. Just real picks from Jamaicans who eat, chill and bring good vibes, every single week.</p>
+            </div>
+            <button class="editorial-strip-link" onclick="showScreen('blog')">Read the blog <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+          </div>
+          <div class="editorial-scroll" id="home-tm-strip"></div>
+        </section>
+
+        <!-- Block C: everything else not featured above (currently
+             Fiction Nightclub + Knutsford Yoga & Wellness). -->
+        <section class="mosaic-section" aria-label="More venues">
+          <div class="mosaic-grid" id="home-mosaic-grid-c"></div>
         </section>
 
       </div>
@@ -1053,14 +1454,14 @@
           <p class="browse-sub">Kingston, St. Andrew &amp; beyond &mdash; explore the full directory</p>
         </div>
         <div class="cat-strip" id="browse-cat-strip" role="group" aria-label="Filter by category">
-          <button class="cat-pill on"       onclick="browseFilter('all',   this)">All</button>
-          <button class="cat-pill"          onclick="browseFilter('dining',this)">Dining</button>
-          <button class="cat-pill"          onclick="browseFilter('bar',   this)">Bars &amp; lounges</button>
-          <button class="cat-pill"          onclick="browseFilter('club',  this)">Clubs</button>
-          <button class="cat-pill"          onclick="browseFilter('outdoor',this)">Outdoor</button>
-          <button class="cat-pill"          onclick="browseFilter('wellness',this)">Wellness</button>
-          <button class="cat-pill"          onclick="browseFilter('family',this)">Family</button>
-          <button class="cat-pill"          onclick="browseFilter('park',  this)">Parks</button>
+          <button class="cat-pill on"       onclick="browseFilter('all',   this)"><i class="ti ti-category" aria-hidden="true"></i><span>All</span></button>
+          <button class="cat-pill"          onclick="browseFilter('dining',this)"><i class="ti ti-tools-kitchen-2" aria-hidden="true"></i><span>Dining</span></button>
+          <button class="cat-pill"          onclick="browseFilter('bar',   this)"><i class="ti ti-beer" aria-hidden="true"></i><span>Bars &amp; lounges</span></button>
+          <button class="cat-pill"          onclick="browseFilter('club',  this)"><i class="ti ti-disco-ball" aria-hidden="true"></i><span>Clubs</span></button>
+          <button class="cat-pill"          onclick="browseFilter('outdoor',this)"><i class="ti ti-sun" aria-hidden="true"></i><span>Outdoor</span></button>
+          <button class="cat-pill"          onclick="browseFilter('wellness',this)"><i class="ti ti-yoga" aria-hidden="true"></i><span>Wellness</span></button>
+          <button class="cat-pill"          onclick="browseFilter('family',this)"><i class="ti ti-users" aria-hidden="true"></i><span>Family</span></button>
+          <button class="cat-pill"          onclick="browseFilter('park',  this)"><i class="ti ti-trees" aria-hidden="true"></i><span>Parks</span></button>
         </div>
         <div class="filter-row" id="browse-filter-row" role="group" aria-label="Additional filters"></div>
         <div class="card-grid" id="browse-card-grid"></div>
@@ -1151,6 +1552,76 @@
       </div>
     </div>
 
+    <!-- ── BLOG ─────────────────────────────────────────────── -->
+    <div class="screen" id="screen-blog">
+      <div class="app-wrap" style="padding-top:32px">
+        <button class="back-btn" onclick="showScreen('home')">&#8592; Home</button>
+
+        <div class="blog-hero">
+          <p class="hero-eyebrow">The journal</p>
+          <h2 class="blog-hero-title">Stories from the island</h2>
+          <p class="blog-hero-sub">Tastemaker interviews, SafeSpace explainers and honest, insider guides to Jamaica &mdash; written by the people who actually go there.</p>
+        </div>
+
+        <div class="blog-grid">
+          <article class="blog-card" role="article">
+            <div class="blog-banner" style="background:#C6553D"></div>
+            <div class="blog-body">
+              <span class="blog-tag tag-amber">Tastemaker</span>
+              <h3 class="blog-title">Inside Broken Plate: a conversation with the chef</h3>
+              <p class="blog-excerpt">We sat down behind the pass at Broken Plate Jamaica to talk fusion cuisine, Kingston's dining scene and what "Tastemaker of the month" really means.</p>
+              <div class="blog-meta">September 2026 &middot; 4 min read</div>
+            </div>
+          </article>
+          <article class="blog-card" role="article">
+            <div class="blog-banner" style="background:#993556"></div>
+            <div class="blog-body">
+              <span class="blog-tag tag-pink">SafeSpace</span>
+              <h3 class="blog-title">The SafeSpace standard: how we verify every rating</h3>
+              <p class="blog-excerpt">No venue earns the badge without passing all four dimensions. Here's exactly how our female reviewers and moderation team assess a space.</p>
+              <div class="blog-meta">August 2026 &middot; 5 min read</div>
+            </div>
+          </article>
+          <article class="blog-card" role="article">
+            <div class="blog-banner" style="background:#378ADD"></div>
+            <div class="blog-body">
+              <span class="blog-tag tag-blue">Explore</span>
+              <h3 class="blog-title">5 hidden gems in St. Ann worth the drive</h3>
+              <p class="blog-excerpt">Beyond the resorts — waterfalls, roadside jerk pans and quiet coves that only come up if you ask a local first.</p>
+              <div class="blog-meta">August 2026 &middot; 6 min read</div>
+            </div>
+          </article>
+          <article class="blog-card" role="article">
+            <div class="blog-banner" style="background:#0F6E56"></div>
+            <div class="blog-body">
+              <span class="blog-tag tag-teal">Solo travel</span>
+              <h3 class="blog-title">A solo traveller's guide to Kingston</h3>
+              <p class="blog-excerpt">Where to eat, stay comfortable and meet people — mapped entirely around SafeSpace-rated venues, with one-tap directions to every spot.</p>
+              <div class="blog-meta">July 2026 &middot; 7 min read</div>
+            </div>
+          </article>
+          <article class="blog-card" role="article">
+            <div class="blog-banner" style="background:#D85A30"></div>
+            <div class="blog-body">
+              <span class="blog-tag tag-coral">Nightlife</span>
+              <h3 class="blog-title">Kingston after dark: our favourite late-night spots</h3>
+              <p class="blog-excerpt">From sports bars with a side of Usain Bolt memorabilia to the dance floor at Fiction — where the city goes once the sun sets.</p>
+              <div class="blog-meta">July 2026 &middot; 5 min read</div>
+            </div>
+          </article>
+          <article class="blog-card" role="article">
+            <div class="blog-banner" style="background:#534AB7"></div>
+            <div class="blog-body">
+              <span class="blog-tag tag-purple">Product</span>
+              <h3 class="blog-title">Behind the vibe picker: how our matching actually works</h3>
+              <p class="blog-excerpt">Six questions, one algorithm. A look under the hood at how we score every venue against your occasion, group and budget.</p>
+              <div class="blog-meta">June 2026 &middot; 4 min read</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
     <div class="safespace-callout" role="complementary" aria-label="SafeSpace feature">
       <div class="ss-icon-circle" aria-hidden="true">&#9792;</div>
       <div>
@@ -1173,7 +1644,7 @@
         <div class="footer-parishes">
           <strong style="font-size:11px;letter-spacing:0.8px;text-transform:uppercase">Parishes covered</strong><br>
           Kingston &amp; St. Andrew &bull; St. Catherine<br>
-          St. Ann &bull; Manchester &bull; St. Elizabeth &bull; Clarendon
+          St. Ann &bull; St. James &bull; Westmoreland
         </div>
         <div class="footer-copy">&copy; 2026 VibePicksJA. All rights reserved.</div>
       </div>

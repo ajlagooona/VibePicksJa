@@ -11,37 +11,40 @@
    ─────────────────────────────────────────────────────────── */
 const VENUES = [
   {
-    id: 'v1',
-    name: "Norma's on the Terrace",
-    location: 'Devon House, Kingston',
+    id: 'broken-plate',
+    name: 'Broken Plate Jamaica',
+    location: 'Progressive Shopping Center, Liguanea, Kingston',
     parish: 'kingston',
     category: 'dining',
-    type: 'Fine dining',
-    color: '#5DCAA5',
-    price_jmd: 'JMD 5,000–10,000',
-    price_usd: 'USD 32–65',
-    rating: 4.9,
-    reviews: 318,
-    safespace: 95,
+    type: 'International fusion',
+    color: '#C6553D',
+    /* Rotating banner photos — shown in place of the flat colour
+       background wherever this venue's card renders. Drop the two
+       supplied photos in at these paths (see chat) to activate. */
+    photos: ['assets/broken-plate/1.jpg', 'assets/broken-plate/3.jpg'],
+    price_jmd: 'JMD 3,500–8,000',
+    price_usd: 'USD 23–52',
+    rating: 3.9,
+    reviews: 59,
+    safespace: null,
     tastemaker: true,
-    badge: '#1 Most loved',
-    w3w: '///mango.terrace.bloom',
-    description: "Set in the grounds of Devon House, Norma's is Kingston's most iconic dining terrace. Impeccable Jamaican cuisine, a lush garden setting, and a warm staff that makes every visit feel like a celebration. Reservations strongly recommended on weekends.",
-    tags: ['Waterfront', 'Live music Fri–Sat', 'Credit cards', 'Reservations', 'Smart casual'],
-    tagStyles: ['tag-teal', 'tag-amber', 'tag-blue', 'tag-green', 'tag-gray'],
+    badge: 'Kingston favorite',
+    description: "Tucked into the Progressive Shopping Center in Liguanea, Broken Plate breaks from tradition with a menu that fuses Jamaican and international flavours — think oxtail mac 'n' cheese balls, ahi tuna wonton tacos and curried goat sushi rolls. Dine indoors or up on the rooftop balcony, and expect refined, seasonal plates with a distinctly Kingston point of view.",
+    tags: ['Rooftop dining', 'Vegetarian friendly', 'Credit cards', 'Reservations', 'Full bar'],
+    tagStyles: ['tag-teal', 'tag-green', 'tag-blue', 'tag-amber', 'tag-gray'],
     features: [
-      { label: 'Credit cards',    yes: true  },
-      { label: 'Reservations',    yes: true  },
-      { label: 'Live music',      yes: true  },
-      { label: 'Smoke-free',      yes: true  },
-      { label: 'Smart dress',     yes: true  },
-      { label: 'Outdoor terrace', yes: true  },
+      { label: 'Credit cards',           yes: true  },
+      { label: 'Reservations',           yes: true  },
+      { label: 'Outdoor seating',        yes: true  },
+      { label: 'Parking available',      yes: true  },
+      { label: 'Vegetarian friendly',    yes: true  },
+      { label: 'Wheelchair accessible',  yes: true  },
     ],
     reviews_sample: [
-      { name: 'Tamara W.', context: 'Group · Celebration', stars: 5, text: "Absolutely magical setting. The food was outstanding and our server Marcus made the whole evening feel so special. Norma's never disappoints." },
-      { name: 'Priya R.',  context: 'Solo · Business dinner', stars: 5, text: "As a solo woman I felt completely comfortable and well looked-after. The garden lighting is beautiful and the staff checked in without being intrusive." },
+      { name: 'Kadiann M.', context: 'Group · Dinner', stars: 4, text: 'The oxtail mac \'n\' cheese balls alone are worth the trip. Great fusion of Jamaican and international flavours, and the staff kept up even with our large group.' },
+      { name: 'Devon R.',   context: 'Date night',     stars: 4, text: 'Rooftop balcony seating with a great view over Liguanea. Crab cakes and the salmon were standouts — book ahead, it fills up on weekends.' },
     ],
-    occasion_scores: { chill: 0.72, celebrate: 0.97, date: 0.91, family: 0.60, work: 0.78, explore: 0.55 },
+    occasion_scores: { chill: 0.68, celebrate: 0.88, date: 0.85, family: 0.55, work: 0.70, explore: 0.80 },
   },
   {
     id: 'v2',
@@ -51,6 +54,7 @@ const VENUES = [
     category: 'bar',
     type: 'Sports bar & lounge',
     color: '#7F77DD',
+    photos: ['assets/tracks-and-records/UB1.jpg', 'assets/tracks-and-records/UB3.jpg'],
     price_jmd: 'JMD 2,000–5,000',
     price_usd: 'USD 13–32',
     rating: 4.5,
@@ -58,7 +62,6 @@ const VENUES = [
     safespace: null,
     tastemaker: true,
     badge: 'Top lounge',
-    w3w: '///beats.crowd.loud',
     description: "Usain Bolt's Kingston flagship. Multiple screens, a buzzing sports atmosphere, and cocktails that keep pace with the action. The go-to spot for game nights, after-work gatherings, and anyone who wants great food with their sport.",
     tags: ['Sports bar', 'DJ nightly', 'Credit cards', 'Casual dresscode', 'Late night'],
     tagStyles: ['tag-purple', 'tag-amber', 'tag-blue', 'tag-teal', 'tag-gray'],
@@ -77,72 +80,6 @@ const VENUES = [
     occasion_scores: { chill: 0.60, celebrate: 0.70, date: 0.55, family: 0.35, work: 0.88, explore: 0.50 },
   },
   {
-    id: 'v3',
-    name: 'Scotchies Jerk Centre',
-    location: 'Hope Road, Kingston',
-    parish: 'kingston',
-    category: 'dining',
-    type: 'Casual dining',
-    color: '#D85A30',
-    price_jmd: 'JMD 800–2,000',
-    price_usd: 'USD 5–13',
-    rating: 4.8,
-    reviews: 924,
-    safespace: 81,
-    tastemaker: false,
-    badge: 'Best jerk in JA',
-    w3w: '///jerk.smoke.fire',
-    description: "The definitive Jamaican jerk experience. Pork, chicken and fish slow-cooked over pimento wood in the open air. No frills, no pretence — just Jamaica on a plate. Arguably the best jerk in the island.",
-    tags: ['Open fire jerk', 'Outdoor seating', 'Budget friendly', 'Local favourite', 'Cash & cards'],
-    tagStyles: ['tag-coral', 'tag-teal', 'tag-green', 'tag-amber', 'tag-blue'],
-    features: [
-      { label: 'Credit cards',   yes: true  },
-      { label: 'Outdoor only',   yes: true  },
-      { label: 'Budget friendly',yes: true  },
-      { label: 'Reservations',   yes: false },
-      { label: 'Open fire grill',yes: true  },
-      { label: 'Takeaway',       yes: true  },
-    ],
-    reviews_sample: [
-      { name: 'Marcus J.',  context: 'Group · Casual lunch',  stars: 5, text: "This is the real deal. Been coming for years and the pimento wood jerk is still unmatched anywhere in Kingston. Queue moves fast." },
-      { name: 'Sandra O.',  context: 'Solo · Quick lunch',    stars: 4, text: "Iconic spot. Outdoor picnic-bench seating, great music playing, and the best jerk chicken I have ever had. Cash is easier." },
-    ],
-    occasion_scores: { chill: 0.88, celebrate: 0.55, date: 0.42, family: 0.80, work: 0.60, explore: 0.75 },
-  },
-  {
-    id: 'v4',
-    name: 'Knutsford Yoga & Wellness',
-    location: 'New Kingston',
-    parish: 'kingston',
-    category: 'wellness',
-    type: 'Fitness & wellness',
-    color: '#1D9E75',
-    price_jmd: 'JMD 1,500–4,000',
-    price_usd: 'USD 10–26',
-    rating: 4.9,
-    reviews: 187,
-    safespace: 97,
-    tastemaker: true,
-    badge: 'Top wellness',
-    w3w: '///calm.breathe.well',
-    description: "Kingston's premier urban wellness studio. Daily yoga, meditation and breathwork sessions in a beautifully curated space. Women's-only sessions every morning. Private sessions and corporate bookings available.",
-    tags: ['Yoga classes', 'Meditation', "Women's sessions", 'Credit cards', 'Private sessions'],
-    tagStyles: ['tag-teal', 'tag-green', 'tag-pink', 'tag-blue', 'tag-purple'],
-    features: [
-      { label: 'Credit cards',    yes: true },
-      { label: 'Bookings required',yes: true },
-      { label: "Women's classes", yes: true },
-      { label: 'Smoke-free',      yes: true },
-      { label: 'Changing rooms',  yes: true },
-      { label: 'Juice bar',       yes: true },
-    ],
-    reviews_sample: [
-      { name: 'Rochelle T.', context: 'Solo · Morning session', stars: 5, text: "My sanctuary. The early morning women's sessions have transformed my week. The instructors are warm, knowledgeable and genuinely caring." },
-      { name: 'Nneka A.',    context: 'Solo · Meditation class', stars: 5, text: "Discovered this place through VibePicksJA and now I come three times a week. Cleanest facilities, most welcoming atmosphere." },
-    ],
-    occasion_scores: { chill: 0.92, celebrate: 0.40, date: 0.50, family: 0.45, work: 0.55, explore: 0.70 },
-  },
-  {
     id: 'v5',
     name: 'Hope Botanical Gardens',
     location: 'Hope Pastures, Kingston',
@@ -150,6 +87,7 @@ const VENUES = [
     category: 'park',
     type: 'Park & outdoor',
     color: '#639922',
+    photos: ['assets/hope-gardens/Hope2.jpg', 'assets/hope-gardens/Hope3.jpg'],
     price_jmd: 'Free / JMD 300 zoo',
     price_usd: 'Free / ~USD 2',
     rating: 4.7,
@@ -157,7 +95,6 @@ const VENUES = [
     safespace: 88,
     tastemaker: false,
     badge: 'Best park',
-    w3w: '///green.hope.bloom',
     description: "Jamaica's most beloved green space. 200 acres of botanical gardens, a zoo, shaded walking trails and open picnic lawns. Perfect for families, solo walkers, runners, and anyone who needs to breathe.",
     tags: ['Free entry', 'Zoo on-site', 'Guided tours', 'Picnic areas', 'Heritage site'],
     tagStyles: ['tag-green', 'tag-teal', 'tag-amber', 'tag-green', 'tag-blue'],
@@ -176,6 +113,70 @@ const VENUES = [
     occasion_scores: { chill: 0.95, celebrate: 0.40, date: 0.65, family: 0.97, work: 0.30, explore: 0.80 },
   },
   {
+    id: 'v4',
+    name: 'Knutsford Yoga & Wellness',
+    location: 'New Kingston',
+    parish: 'kingston',
+    category: 'wellness',
+    type: 'Fitness & wellness',
+    color: '#1D9E75',
+    price_jmd: 'JMD 1,500–4,000',
+    price_usd: 'USD 10–26',
+    rating: 4.9,
+    reviews: 187,
+    safespace: 97,
+    tastemaker: true,
+    badge: 'Top wellness',
+    description: "Kingston's premier urban wellness studio. Daily yoga, meditation and breathwork sessions in a beautifully curated space. Women's-only sessions every morning. Private sessions and corporate bookings available.",
+    tags: ['Yoga classes', 'Meditation', "Women's sessions", 'Credit cards', 'Private sessions'],
+    tagStyles: ['tag-teal', 'tag-green', 'tag-pink', 'tag-blue', 'tag-purple'],
+    features: [
+      { label: 'Credit cards',    yes: true },
+      { label: 'Bookings required',yes: true },
+      { label: "Women's classes", yes: true },
+      { label: 'Smoke-free',      yes: true },
+      { label: 'Changing rooms',  yes: true },
+      { label: 'Juice bar',       yes: true },
+    ],
+    reviews_sample: [
+      { name: 'Rochelle T.', context: 'Solo · Morning session', stars: 5, text: "My sanctuary. The early morning women's sessions have transformed my week. The instructors are warm, knowledgeable and genuinely caring." },
+      { name: 'Nneka A.',    context: 'Solo · Meditation class', stars: 5, text: "Discovered this place through VibePicksJA and now I come three times a week. Cleanest facilities, most welcoming atmosphere." },
+    ],
+    occasion_scores: { chill: 0.92, celebrate: 0.40, date: 0.50, family: 0.45, work: 0.55, explore: 0.70 },
+  },
+  {
+    id: 'v3',
+    name: 'Scotchies Jerk Centre',
+    location: 'Hope Road, Kingston',
+    parish: 'kingston',
+    category: 'dining',
+    type: 'Casual dining',
+    color: '#D85A30',
+    price_jmd: 'JMD 800–2,000',
+    price_usd: 'USD 5–13',
+    rating: 4.8,
+    reviews: 924,
+    safespace: 81,
+    tastemaker: false,
+    badge: 'Best jerk in JA',
+    description: "The definitive Jamaican jerk experience. Pork, chicken and fish slow-cooked over pimento wood in the open air. No frills, no pretence — just Jamaica on a plate. Arguably the best jerk in the island.",
+    tags: ['Open fire jerk', 'Outdoor seating', 'Budget friendly', 'Local favourite', 'Cash & cards'],
+    tagStyles: ['tag-coral', 'tag-teal', 'tag-green', 'tag-amber', 'tag-blue'],
+    features: [
+      { label: 'Credit cards',   yes: true  },
+      { label: 'Outdoor only',   yes: true  },
+      { label: 'Budget friendly',yes: true  },
+      { label: 'Reservations',   yes: false },
+      { label: 'Open fire grill',yes: true  },
+      { label: 'Takeaway',       yes: true  },
+    ],
+    reviews_sample: [
+      { name: 'Marcus J.',  context: 'Group · Casual lunch',  stars: 5, text: "This is the real deal. Been coming for years and the pimento wood jerk is still unmatched anywhere in Kingston. Queue moves fast." },
+      { name: 'Sandra O.',  context: 'Solo · Quick lunch',    stars: 4, text: "Iconic spot. Outdoor picnic-bench seating, great music playing, and the best jerk chicken I have ever had. Cash is easier." },
+    ],
+    occasion_scores: { chill: 0.88, celebrate: 0.55, date: 0.42, family: 0.80, work: 0.60, explore: 0.75 },
+  },
+  {
     id: 'v6',
     name: 'Caymanas Park & Fun Zone',
     location: 'St. Catherine',
@@ -190,7 +191,6 @@ const VENUES = [
     safespace: 89,
     tastemaker: true,
     badge: 'Best family',
-    w3w: '///race.family.fun',
     description: "The Caribbean's top horse racing venue doubles as a full family entertainment destination. Rides, food court, racing and open space — a complete day out for all ages from the little ones to the grandparents.",
     tags: ["Kids' rides", 'Food court', 'Horse racing', 'Parking', 'Weekend events'],
     tagStyles: ['tag-blue', 'tag-teal', 'tag-amber', 'tag-green', 'tag-purple'],
@@ -223,7 +223,6 @@ const VENUES = [
     safespace: null,
     tastemaker: false,
     badge: 'Top nightlife',
-    w3w: '///night.pulse.fiction',
     description: "Kingston's premium nightlife venue. World-class DJs, immaculate sound system and a crowd that knows how to move. Friday and Saturday nights are unmissable. Book a VIP table for weekends to guarantee your spot.",
     tags: ['Top club', 'DJ events', 'Smart casual', 'Credit cards', 'VIP tables'],
     tagStyles: ['tag-pink', 'tag-purple', 'tag-amber', 'tag-teal', 'tag-blue'],
@@ -281,7 +280,7 @@ const QUIZ_STEPS = [
     question: 'Where in Jamaica?',
     sub: 'Pick your area — or where you want to end up.',
     type: 'parish',
-    options: ['Kingston / St. Andrew', 'St. Catherine', 'St. Ann', 'Manchester', 'St. Elizabeth', 'Clarendon', 'Surprise me'],
+    options: ['Kingston / St. Andrew', 'St. Catherine', 'St. Ann', 'St. James', 'Westmoreland', 'Surprise me'],
   },
   {
     key: 'budget',
@@ -397,7 +396,7 @@ function showScreen(id) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
   /* Initialise screen-specific content on first show */
-  if (id === 'home')   renderHomeCards('all');
+  if (id === 'home')   { renderHomeMosaic('all'); renderEditorialStrips(); }
   if (id === 'browse') { renderBrowseCards('all'); renderBrowseFilters(); }
   if (id === 'quiz')   { State.quizStep = 0; State.quizAnswers = {}; renderQuiz(); }
   if (id === 'ss')     renderSSCards();
@@ -405,6 +404,9 @@ function showScreen(id) {
 
 function updateNav(id) {
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  /* Blog is reachable from the Tastemaker strip's CTA, but no longer
+     has its own primary nav link, so there's nothing to highlight
+     when that screen is active. */
   const map = { home: 'nl-home', browse: 'nl-browse', quiz: 'nl-quiz', ss: 'nl-ss' };
   if (map[id]) el(map[id]).classList.add('active');
 }
@@ -428,6 +430,36 @@ function toggleMobileMenu() {
 /* ─── Card builder ───────────────────────────────────────────
    Builds a single venue card DOM element.
    ─────────────────────────────────────────────────────────── */
+/* ─── Amenity icon key ────────────────────────────────────────
+   A compact icon strip for listing cards (Browse + SafeSpace grids
+   only — not the home mosaic cards). Available features show at
+   full opacity, unavailable ones are greyed, and SafeSpace always
+   sits apart in its own rose chip at the end. Reuses the same
+   featureIconClass() mapping as the venue detail page so a symbol
+   means the same thing everywhere it appears. Uses the native
+   `title` attribute for hover/tap labels. */
+function buildAmenityIconsHtml(v) {
+  if (!v.features || !v.features.length) return '';
+
+  const available = v.features.filter(f => f.yes);
+  const unavailable = v.features.filter(f => !f.yes);
+
+  const iconSpan = f => `<span class="amenity-icon${f.yes ? '' : ' off'}" title="${f.label}" aria-label="${f.label}${f.yes ? '' : ' (not available)'}"><i class="${featureIconClass(f)}" aria-hidden="true"></i></span>`;
+
+  const safespaceSpan = v.safespace
+    ? `<span class="amenity-icon safespace" title="SafeSpace ${v.safespace}/100" aria-label="SafeSpace rated ${v.safespace} out of 100">&#9792; ${v.safespace}</span>`
+    : `<span class="amenity-icon safespace off" title="SafeSpace: unrated" aria-label="SafeSpace unrated">&#9792;</span>`;
+
+  return `
+    <div class="amenity-strip">
+      ${available.map(iconSpan).join('')}
+      ${available.length && unavailable.length ? '<span class="amenity-divider" aria-hidden="true"></span>' : ''}
+      ${unavailable.map(iconSpan).join('')}
+      ${safespaceSpan}
+    </div>
+  `;
+}
+
 function buildCard(v) {
   const div = document.createElement('div');
   div.className = 'venue-card';
@@ -480,6 +512,7 @@ function buildCard(v) {
         <span class="price-tag">${v.price_jmd.split('–')[0].trim()}+</span>
       </div>
       <div>${tagHtml}</div>
+      ${buildAmenityIconsHtml(v)}
     </div>
     ${ssStripHtml}
   `;
@@ -487,21 +520,493 @@ function buildCard(v) {
   return div;
 }
 
+/* ─── Photo rotation ─────────────────────────────────────────
+   For venues with a `photos` array, crossfades between images
+   behind the card content every 8s instead of the flat colour
+   fill. Reusable across any card that has a .mosaic-scrim layer.
+   Active timers are tracked per render scope (mosaic grid vs.
+   editorial strips) so re-rendering one doesn't kill timers that
+   are still driving cards in the other.
+
+   `delayMs` staggers a card's very first transition — used on the
+   mosaic hero card so its crossfade doesn't land on the exact same
+   beat as the two compact cards beside it (which both start at 0
+   delay). Subsequent transitions still run on the regular 8s beat
+   from that offset starting point. ─────────────────────────────── */
+let activePhotoIntervals = []; /* { scope, clear } */
+
+function clearPhotoRotations(scope) {
+  activePhotoIntervals = activePhotoIntervals.filter(entry => {
+    if (entry.scope !== scope) return true;
+    entry.clear();
+    return false;
+  });
+}
+
+function startPhotoRotation(container, photos, scope, delayMs = 0) {
+  if (!photos || !photos.length) return;
+
+  const layer = document.createElement('div');
+  layer.className = 'mosaic-photo-layer';
+
+  const imgA = document.createElement('img');
+  const imgB = document.createElement('img');
+  imgA.className = 'mosaic-photo-img front';
+  imgB.className = 'mosaic-photo-img';
+  imgA.alt = ''; imgB.alt = '';
+  imgA.decoding = 'async'; imgB.decoding = 'async';
+  imgA.src = photos[0];
+  imgB.src = photos[1] || photos[0];
+
+  layer.appendChild(imgB);
+  layer.appendChild(imgA);
+  container.prepend(layer); /* sits behind the existing scrim/badges/info */
+
+  if (photos.length < 2) return; /* single photo — nothing to rotate */
+
+  let front = imgA;              /* visible now, showing photos[0] */
+  let back = imgB;               /* hidden, preloaded with photos[1] */
+  let nextIndex = 2 % photos.length; /* photo to preload after this reveal */
+
+  const tick = () => {
+    /* reveal the already-preloaded `back` layer */
+    front.classList.remove('front');
+    back.classList.add('front');
+    [front, back] = [back, front];
+    /* preload the following photo into the now-hidden layer, ready
+       for the next tick */
+    back.src = photos[nextIndex];
+    nextIndex = (nextIndex + 1) % photos.length;
+  };
+
+  /* `timer` always points at whichever handle is currently live —
+     the one-off stagger timeout, then the recurring interval once
+     it kicks in — so clear() works correctly at any point. */
+  const timer = { id: null, kind: 'timeout' };
+  timer.id = setTimeout(() => {
+    tick();
+    timer.kind = 'interval';
+    timer.id = setInterval(tick, 8000);
+  }, delayMs);
+
+  activePhotoIntervals.push({
+    scope,
+    clear: () => (timer.kind === 'interval' ? clearInterval(timer.id) : clearTimeout(timer.id)),
+  });
+}
+
+/* ─── Mosaic card builder ─────────────────────────────────────
+   Builds a single full-bleed venue tile for the home mosaic grid
+   (Immersive magazine mosaic — Eater / Time Out / IG Explore style).
+   Favourites and SafeSpace badges overlay the image; venue info
+   sits on a gradient scrim at the bottom.
+   ─────────────────────────────────────────────────────────── */
+/* Same category → icon mapping used on the cat-strip filter pills,
+   reused here so the "Vibe Picks" tag icon matches a venue's own
+   category at a glance. */
+const CATEGORY_ICONS = {
+  dining:   'ti-tools-kitchen-2',
+  bar:      'ti-beer',
+  club:     'ti-disco-ball',
+  outdoor:  'ti-sun',
+  wellness: 'ti-yoga',
+  family:   'ti-users',
+  park:     'ti-trees',
+};
+
+function buildMosaicCard(v, isHero) {
+  const div = document.createElement('div');
+  div.className = `mosaic-card ${isHero ? 'hero' : 'compact'}`;
+  div.style.background = v.color;
+  div.setAttribute('role', 'article');
+  div.setAttribute('aria-label', v.name);
+  div.onclick = () => openDetail(v.id);
+
+  const isSaved = State.savedVenues.has(v.id);
+
+  const chosenTagHtml = v.tastemaker
+    ? `<span class="mosaic-vibe-tag"><i class="ti ${CATEGORY_ICONS[v.category] || 'ti-category'}" aria-hidden="true"></i> Vibe Picks</span>`
+    : '<span></span>';
+
+  const ssBadgeHtml = v.safespace
+    ? `<div class="mosaic-ss-badge ${v.safespace >= 85 ? 'high' : 'mid'}"><span class="num">${v.safespace}</span><span class="lbl">SafeSpace</span></div>`
+    : `<div class="mosaic-ss-badge"><span class="num">—</span><span class="lbl">Unrated</span></div>`;
+
+  const tagHtml = isHero
+    ? v.tags.slice(0, 3).map((t, i) => `<span class="tag ${v.tagStyles[i] || 'tag-teal'}">${t}</span>`).join('')
+    : '';
+
+  div.innerHTML = `
+    <div class="mosaic-scrim"></div>
+    <div class="mosaic-top-badges">
+      ${chosenTagHtml}
+      <div class="mosaic-badges-right">
+        ${ssBadgeHtml}
+        <button class="mosaic-heart ${isSaved ? 'saved' : ''}" data-save-venue="${v.id}"
+          onclick="event.stopPropagation(); toggleSaveVenue('${v.id}')"
+          aria-label="${isSaved ? 'Remove' : 'Save'} ${v.name} to your list" aria-pressed="${isSaved}">
+          <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-heart" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <div class="mosaic-info">
+      <div class="mosaic-name">${v.name}</div>
+      <div class="mosaic-meta">${v.location} &middot; ${v.type}</div>
+      <div class="mosaic-rating">
+        <span class="stars">${stars(v.rating)}</span>
+        <span>${v.rating} &middot; ${v.reviews.toLocaleString()} reviews</span>
+      </div>
+      ${tagHtml ? `<div class="mosaic-tags">${tagHtml}</div>` : ''}
+    </div>
+  `;
+
+  /* Stagger the hero card's rotation by half a cycle so it doesn't
+     crossfade in lockstep with the two compact cards beside it. */
+  if (v.photos && v.photos.length) startPhotoRotation(div, v.photos, 'mosaic', isHero ? 4000 : 0);
+
+  return div;
+}
+
+/* ─── Tastemaker of the Month video card ─────────────────────
+   A one-off editorial feature slotted into the mosaic grid in
+   place of a regular venue card. Starts muted (autoplay requires
+   it), with custom mute, play/pause and a scrub-able progress bar.
+   Uses the real YouTube IFrame Player API (not just postMessage)
+   since a reliable progress bar needs getCurrentTime()/getDuration()
+   polling, not just one-off commands. ─────────────────────────── */
+const TASTEMAKER_VIDEO_FEATURE = {
+  __type: 'video-feature',
+  youtubeId: 'ZAtJgPCZiRc',
+  title: 'Tastemaker of the Month: Broken Plate',
+  subtitle: 'Behind the pass with the chef at Broken Plate Jamaica',
+  linkVenueId: 'broken-plate',
+};
+
+/* Loads the YouTube IFrame API script exactly once and resolves
+   with the global YT object once it's ready. Safe to call from
+   multiple cards — they all share the same loaded script/promise. */
+let youtubeApiPromise = null;
+function loadYouTubeApi() {
+  if (youtubeApiPromise) return youtubeApiPromise;
+  youtubeApiPromise = new Promise(resolve => {
+    if (window.YT && window.YT.Player) { resolve(window.YT); return; }
+    const prevReady = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      if (typeof prevReady === 'function') prevReady();
+      resolve(window.YT);
+    };
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
+  });
+  return youtubeApiPromise;
+}
+
+function formatVideoTime(sec) {
+  if (!isFinite(sec) || sec < 0) sec = 0;
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
+let videoCardSeq = 0;
+
+function buildTastemakerVideoCard(feature, isHero) {
+  const div = document.createElement('div');
+  const iframeId = `tastemaker-video-${++videoCardSeq}`;
+  div.className = `mosaic-card video-card ${isHero ? 'hero' : 'compact'}`;
+  div.style.background = '#000';
+  div.setAttribute('role', 'article');
+  div.setAttribute('aria-label', feature.title);
+  /* No click-through here — this is a video card, not a venue
+     listing link. Only the mute, play/pause and seek controls
+     (which stopPropagation) are interactive. */
+
+  const embedSrc = `https://www.youtube.com/embed/${feature.youtubeId}`
+    + `?autoplay=1&mute=1&enablejsapi=1&playsinline=1&controls=0&rel=0`
+    + `&modestbranding=1&loop=1&playlist=${feature.youtubeId}`;
+
+  div.innerHTML = `
+    <div class="video-embed-wrap">
+      <iframe id="${iframeId}" class="video-embed-iframe" src="${embedSrc}"
+        title="${feature.title}" tabindex="-1" frameborder="0"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+    <div class="mosaic-scrim"></div>
+    <div class="mosaic-top-badges">
+      <span class="mosaic-chosen-tag"><i class="fa-solid fa-play" aria-hidden="true"></i> Tastemaker of the month</span>
+      <div class="mosaic-badges-right">
+        <button class="video-mute-btn" data-muted="true" aria-pressed="false"
+          onclick="event.stopPropagation(); toggleVideoMute(this)"
+          aria-label="Unmute video">
+          <i class="fa-solid fa-volume-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <div class="mosaic-info video-info">
+      <div class="mosaic-name">${feature.title}</div>
+      <div class="mosaic-meta">${feature.subtitle}</div>
+      <div class="video-controls">
+        <button class="video-play-btn" data-playing="true" aria-pressed="true"
+          onclick="event.stopPropagation(); toggleVideoPlay(this)" aria-label="Pause video">
+          <i class="fa-solid fa-pause" aria-hidden="true"></i>
+        </button>
+        <div class="video-progress-track" onclick="event.stopPropagation(); seekVideo(event, this)">
+          <div class="video-progress-fill"></div>
+        </div>
+        <span class="video-time">0:00 / 0:00</span>
+      </div>
+    </div>
+  `;
+
+  initTastemakerPlayer(iframeId, div);
+
+  return div;
+}
+
+/* Wires up the real YT.Player against the iframe we already built
+   (adopting an existing customised iframe, rather than letting the
+   API create its own — keeps our autoplay/loop/controls params). */
+function initTastemakerPlayer(iframeId, cardEl) {
+  loadYouTubeApi().then(YT => {
+    /* card may already be gone if a fast filter click re-rendered
+       the grid before the API finished loading */
+    if (!document.body.contains(cardEl)) return;
+
+    let pollId = null;
+    const player = new YT.Player(iframeId, {
+      events: {
+        onReady: (e) => {
+          const timeEl = cardEl.querySelector('.video-time');
+          if (timeEl) timeEl.textContent = `0:00 / ${formatVideoTime(e.target.getDuration())}`;
+        },
+        onStateChange: (e) => {
+          const playBtn = cardEl.querySelector('.video-play-btn');
+          const isPlaying = e.data === YT.PlayerState.PLAYING;
+
+          if (playBtn) {
+            playBtn.dataset.playing = String(isPlaying);
+            playBtn.setAttribute('aria-pressed', String(isPlaying));
+            playBtn.setAttribute('aria-label', isPlaying ? 'Pause video' : 'Play video');
+            playBtn.innerHTML = isPlaying
+              ? '<i class="fa-solid fa-pause" aria-hidden="true"></i>'
+              : '<i class="fa-solid fa-play" aria-hidden="true"></i>';
+          }
+
+          if (isPlaying && !pollId) {
+            pollId = setInterval(() => {
+              if (!document.body.contains(cardEl)) { clearInterval(pollId); pollId = null; return; }
+              const fill = cardEl.querySelector('.video-progress-fill');
+              const timeEl = cardEl.querySelector('.video-time');
+              const dur = player.getDuration() || 0;
+              const cur = player.getCurrentTime() || 0;
+              if (fill && dur > 0) fill.style.width = `${Math.min(100, (cur / dur) * 100)}%`;
+              if (timeEl) timeEl.textContent = `${formatVideoTime(cur)} / ${formatVideoTime(dur)}`;
+            }, 400);
+          } else if (!isPlaying && pollId) {
+            clearInterval(pollId);
+            pollId = null;
+          }
+        },
+      },
+    });
+
+    cardEl._tastemakerPlayer = player;
+  });
+}
+
+function toggleVideoMute(btn) {
+  const card = btn.closest('.video-card');
+  const player = card && card._tastemakerPlayer;
+  if (!player || typeof player.isMuted !== 'function') return;
+
+  const isMuted = player.isMuted();
+  if (isMuted) player.unMute(); else player.mute();
+
+  btn.setAttribute('aria-pressed', String(!isMuted));
+  btn.setAttribute('aria-label', isMuted ? 'Mute video' : 'Unmute video');
+  btn.innerHTML = isMuted
+    ? '<i class="fa-solid fa-volume-high" aria-hidden="true"></i>'
+    : '<i class="fa-solid fa-volume-xmark" aria-hidden="true"></i>';
+}
+
+function toggleVideoPlay(btn) {
+  const card = btn.closest('.video-card');
+  const player = card && card._tastemakerPlayer;
+  if (!player) return;
+  /* button icon/state updates itself via the onStateChange handler
+     in initTastemakerPlayer once the player actually responds */
+  if (btn.dataset.playing === 'true') player.pauseVideo();
+  else player.playVideo();
+}
+
+function seekVideo(evt, track) {
+  const card = track.closest('.video-card');
+  const player = card && card._tastemakerPlayer;
+  if (!player) return;
+  const rect = track.getBoundingClientRect();
+  const ratio = Math.min(1, Math.max(0, (evt.clientX - rect.left) / rect.width));
+  player.seekTo((player.getDuration() || 0) * ratio, true);
+}
+
+/* Dispatches to the right card builder — a venue, or the special
+   video-feature slot. */
+function buildGridCard(item, isHero) {
+  return item.__type === 'video-feature'
+    ? buildTastemakerVideoCard(item, isHero)
+    : buildMosaicCard(item, isHero);
+}
+
+/* Groups venues into mosaic blocks of up to 3: one tall hero on the
+   left, two compact tiles stacked on the right (or fewer, for the
+   final partial group). A block containing the video feature uses
+   a different shape instead — a wide 16:9 banner on top with the
+   other two venues side by side underneath — since a landscape
+   video letterboxed into a tall portrait hero slot looks terrible
+   (huge black bars). */
+function buildMosaicBlock(group) {
+  if (group[0] && group[0].__type === 'video-feature') return buildVideoBlock(group);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'mosaic-block' + (group.length === 1 ? ' single' : '');
+
+  wrap.appendChild(buildGridCard(group[0], true));
+  if (group[1]) {
+    const compact = buildGridCard(group[1], false);
+    if (group.length === 2) compact.classList.add('fill');
+    wrap.appendChild(compact);
+  }
+  if (group[2]) wrap.appendChild(buildGridCard(group[2], false));
+
+  return wrap;
+}
+
+function buildVideoBlock(group) {
+  const wrap = document.createElement('div');
+  wrap.className = 'mosaic-block video-block';
+
+  wrap.appendChild(buildTastemakerVideoCard(group[0], true));
+  if (group[1]) wrap.appendChild(buildMosaicCard(group[1], false));
+  if (group[2]) wrap.appendChild(buildMosaicCard(group[2], false));
+
+  return wrap;
+}
+
 /* ─── Home screen ────────────────────────────────────────────*/
 function homeFilter(cat, btn) {
   document.querySelectorAll('#home-cat-strip .cat-pill').forEach(p => p.classList.remove('on'));
   btn.classList.add('on');
   State.activeFilters.home = cat;
-  renderHomeCards(cat);
+  renderHomeMosaic(cat);
 }
 
-function renderHomeCards(cat) {
-  const grid = el('home-card-grid');
-  grid.innerHTML = '';
-  const filtered = cat === 'all'
-    ? VENUES
-    : VENUES.filter(v => v.category === cat);
-  filtered.forEach(v => grid.appendChild(buildCard(v)));
+function renderHomeMosaic(cat) {
+  const gridA = el('home-mosaic-grid-a');
+  const gridB = el('home-mosaic-grid-b');
+  const gridC = el('home-mosaic-grid-c');
+  if (!gridA) return;
+
+  clearPhotoRotations('mosaic');
+  gridA.innerHTML = '';
+  if (gridB) gridB.innerHTML = '';
+  if (gridC) gridC.innerHTML = '';
+
+  /* B/C only get content in the "All" view (see below) — when a
+     category filter empties them, hide their wrapping sections too,
+     otherwise they'd leave a stray blank gap between the editorial
+     strips either side of them. */
+  [gridB, gridC].forEach(grid => {
+    if (!grid) return;
+    const section = grid.closest('section');
+    if (section) section.style.display = cat === 'all' ? '' : 'none';
+  });
+
+  if (cat !== 'all') {
+    /* Category filters just show a normal flowing grid of matches —
+       the hand-curated "All" sequence below is a homepage-only thing. */
+    const filtered = VENUES.filter(v => v.category === cat);
+    for (let i = 0; i < filtered.length; i += 3) {
+      gridA.appendChild(buildMosaicBlock(filtered.slice(i, i + 3)));
+    }
+    return;
+  }
+
+  /* The "All" homepage view is a hand-curated sequence, not a
+     generic chunk-by-3 of the venue list:
+       A. Broken Plate hero + Tracks & Records + Hope Gardens, then
+          the Tastemaker-of-the-month video on its own wide block
+          (SafeSpace picks strip sits right after this, in the HTML)
+       B. Scotchies Jerk Centre + Caymanas Park
+          (Tastemaker picks strip sits right after this, in the HTML)
+       C. Everything else not already featured above */
+  const byId = id => VENUES.find(v => v.id === id);
+  const groupA = ['broken-plate', 'v2', 'v5'].map(byId).filter(Boolean);
+  const groupB = ['v3', 'v6'].map(byId).filter(Boolean);
+  const curatedIds = new Set([...groupA, ...groupB].map(v => v.id));
+  const rest = VENUES.filter(v => !curatedIds.has(v.id));
+
+  gridA.appendChild(buildMosaicBlock(groupA));
+  gridA.appendChild(buildVideoBlock([TASTEMAKER_VIDEO_FEATURE]));
+
+  if (gridB) gridB.appendChild(buildMosaicBlock(groupB));
+
+  if (gridC) {
+    for (let i = 0; i < rest.length; i += 3) {
+      gridC.appendChild(buildMosaicBlock(rest.slice(i, i + 3)));
+    }
+  }
+}
+
+/* ─── Editorial strips ───────────────────────────────────────
+   Curated, opinionated collections at the bottom of the homepage
+   (SafeSpace picks, Tastemaker picks) — separate from the venue
+   grid above, giving the platform an editorial point of view
+   rather than reading as a plain directory.
+   ─────────────────────────────────────────────────────────── */
+function buildEditorialCard(v, type) {
+  const div = document.createElement('div');
+  div.className = 'editorial-card';
+  div.style.background = v.color;
+  div.setAttribute('role', 'article');
+  div.setAttribute('aria-label', v.name);
+  div.onclick = () => openDetail(v.id);
+
+  const badgeHtml = type === 'ss'
+    ? `<span class="editorial-badge ss">&#9792; SafeSpace ${v.safespace}</span>`
+    : `<span class="editorial-badge tm"><i class="fa-solid fa-star" aria-hidden="true"></i> Tastemaker</span>`;
+
+  div.innerHTML = `
+    <div class="mosaic-scrim"></div>
+    ${badgeHtml}
+    <div class="editorial-info">
+      <div class="editorial-name">${v.name}</div>
+      <div class="editorial-meta">${v.location} &middot; ${v.type}</div>
+    </div>
+  `;
+
+  if (v.photos && v.photos.length) startPhotoRotation(div, v.photos, 'editorial');
+
+  return div;
+}
+
+function renderEditorialStrips() {
+  clearPhotoRotations('editorial');
+
+  const ssStrip = el('home-ss-strip');
+  if (ssStrip) {
+    ssStrip.innerHTML = '';
+    VENUES.filter(v => v.safespace)
+      .sort((a, b) => b.safespace - a.safespace)
+      .forEach(v => ssStrip.appendChild(buildEditorialCard(v, 'ss')));
+  }
+
+  const tmStrip = el('home-tm-strip');
+  if (tmStrip) {
+    tmStrip.innerHTML = '';
+    VENUES.filter(v => v.tastemaker)
+      .forEach(v => tmStrip.appendChild(buildEditorialCard(v, 'tm')));
+  }
 }
 
 /* ─── Browse screen ──────────────────────────────────────────*/
@@ -539,6 +1044,16 @@ function renderBrowseCards(cat) {
 }
 
 /* ─── Venue detail ───────────────────────────────────────────*/
+
+/* Builds a Google Maps search deep-link from a venue's name and
+   location — the "Maps URLs" scheme, which needs no API key and
+   makes zero API calls on our end. Google resolves the query only
+   when the user actually clicks through, on their own device. */
+function buildMapsUrl(v) {
+  const query = encodeURIComponent(`${v.name}, ${v.location}, Jamaica`);
+  return `https://www.google.com/maps/search/?api=1&query=${query}`;
+}
+
 function openDetail(id) {
   const v = VENUES.find(x => x.id === id);
   if (!v) return;
@@ -567,6 +1082,13 @@ const FEATURE_ICONS = [
   { match: ['changing'], icon: 'fa-solid fa-door-open' },
   { match: ['late night'], icon: 'fa-solid fa-moon' },
   { match: ['sports'], icon: 'fa-solid fa-tv' },
+  { match: ['wheelchair', 'accessible'], icon: 'fa-solid fa-wheelchair' },
+  { match: ['vegetarian', 'vegan'], icon: 'fa-solid fa-leaf' },
+  { match: ['delivery'], icon: 'fa-solid fa-motorcycle' },
+  { match: ['waterfront', 'beach'], icon: 'fa-solid fa-water' },
+  { match: ['wifi'], icon: 'fa-solid fa-wifi' },
+  { match: ['quiet', 'low noise'], icon: 'fa-solid fa-volume-low' },
+  { match: ['full bar', 'cocktail'], icon: 'fa-solid fa-martini-glass' },
 ];
 
 function featureIconClass(feature) {
@@ -583,24 +1105,47 @@ function toggleSaveVenue(id) {
   } else {
     State.savedVenues.add(id);
   }
-
-  const btn = document.querySelector(`[data-save-venue="${id}"]`);
-  const alert = document.querySelector(`[data-save-alert="${id}"]`);
-  if (!btn || !alert) return;
-
   const isSaved = State.savedVenues.has(id);
-  btn.classList.toggle('saved', isSaved);
-  btn.setAttribute('aria-pressed', String(isSaved));
-  btn.innerHTML = `<i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-bookmark" aria-hidden="true"></i>`;
-  alert.textContent = isSaved ? 'Saved' : 'Removed';
-  alert.classList.add('show');
-  setTimeout(() => alert.classList.remove('show'), 1800);
+
+  /* Sync every control referencing this venue: the detail page's
+     bookmark button, and any mosaic-card hearts on the home grid. */
+  document.querySelectorAll(`[data-save-venue="${id}"]`).forEach(btn => {
+    btn.classList.toggle('saved', isSaved);
+    btn.setAttribute('aria-pressed', String(isSaved));
+    const icon = btn.classList.contains('detail-save-btn') ? 'fa-bookmark' : 'fa-heart';
+    btn.innerHTML = `<i class="${isSaved ? 'fa-solid' : 'fa-regular'} ${icon}" aria-hidden="true"></i>`;
+  });
+
+  const alert = document.querySelector(`[data-save-alert="${id}"]`);
+  if (alert) {
+    alert.textContent = isSaved ? 'Saved' : 'Removed';
+    alert.classList.add('show');
+    setTimeout(() => alert.classList.remove('show'), 1800);
+  }
 }
 
 function renderDetail(v) {
   const isSaved = State.savedVenues.has(v.id);
-  const featHtml = v.features.map(f => `
-    <div class="feat-item">
+
+  /* SafeSpace gets its own tile at the front of the grid — a curated,
+     verified score rather than a plain yes/no amenity toggle, so it's
+     visually set apart (rose tile) with a green dot when rated and a
+     red dot when not, same as every other tile. */
+  const safespaceTileHtml = v.safespace
+    ? `<div class="feat-item safespace" title="SafeSpace ${v.safespace}/100">
+         <span class="feat-dot" aria-hidden="true"></span>
+         <span class="feat-icon safespace" aria-hidden="true">&#9792;</span>
+         <span>SafeSpace ${v.safespace}</span>
+       </div>`
+    : `<div class="feat-item safespace off" title="SafeSpace: unrated">
+         <span class="feat-dot" aria-hidden="true"></span>
+         <span class="feat-icon safespace" aria-hidden="true">&#9792;</span>
+         <span>SafeSpace unrated</span>
+       </div>`;
+
+  const featHtml = safespaceTileHtml + v.features.map(f => `
+    <div class="feat-item ${f.yes ? '' : 'off'}" title="${f.label}${f.yes ? '' : ' (not available)'}">
+      <span class="feat-dot" aria-hidden="true"></span>
       <span class="feat-icon ${f.yes ? 'yes' : 'no'}" aria-hidden="true"><i class="${featureIconClass(f)}"></i></span>
       <span>${f.label}</span>
     </div>
@@ -699,10 +1244,12 @@ function renderDetail(v) {
     <div class="sec-label">Venue features</div>
     <div class="feat-grid">${featHtml}</div>
 
-    <div class="w3w-tag" role="note" aria-label="What3Words location">
-      <strong>///</strong> ${v.w3w.replace('///', '')}
-      &nbsp;&middot;&nbsp; <span style="font-size:11px;color:var(--ink-4)">Precise entrance pin</span>
-    </div>
+    <a class="maps-tag" href="${buildMapsUrl(v)}" target="_blank" rel="noopener noreferrer"
+       aria-label="Open ${v.name} in Google Maps">
+      <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+      Open in Google Maps
+      <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" style="font-size:10px;"></i>
+    </a>
 
     <div style="margin-bottom:16px">${tagHtml}</div>
 

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Layout B — Editorial Rows + Favourites Rail</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --brand:#1D9E75; --brand-dark:#0F6E56; --brand-deep:#085041; --brand-light:#E1F5EE; --brand-mid:#9FE1CB;
+    --rose:#993556; --rose-dark:#72243E; --rose-light:#FBEAF0; --rose-border:#F4C0D1;
+    --amber:#BA7517; --amber-light:#FAEEDA; --amber-dark:#633806;
+    --ink:#1A1A18; --ink-2:#3A3A36; --ink-3:#6B6B64; --ink-4:#9B9B92;
+    --surface:#FFFFFF; --surface-2:#F7F6F2; --surface-3:#EFEDE7;
+    --border:rgba(26,26,24,0.10); --border-2:rgba(26,26,24,0.18);
+    --radius-sm:6px; --radius-md:10px; --radius-lg:16px; --radius-xl:24px;
+    --shadow-sm:0 1px 3px rgba(0,0,0,0.06); --shadow-md:0 4px 16px rgba(0,0,0,0.08);
+    --font-sans:'DM Sans', system-ui, sans-serif; --font-serif:'DM Serif Display', Georgia, serif;
+    --transition: all 0.18s ease;
+  }
+  body { font-family: var(--font-sans); background: var(--surface); color: var(--ink); -webkit-font-smoothing: antialiased; padding-bottom: 80px; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  header.top { background: var(--surface); border-bottom: 0.5px solid var(--border); padding: 20px 0; margin-bottom: 28px; }
+  header.top .wrap { display: flex; align-items: baseline; justify-content: space-between; }
+  .brand { font-family: var(--font-serif); font-size: 22px; color: var(--brand); }
+  .note { font-size: 12px; color: var(--ink-4); }
+
+  .annot { background: var(--rose-light); border: 1px solid var(--rose-border); border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 32px; font-size: 13px; color: var(--rose-dark); line-height: 1.6; }
+  .annot b { color: var(--rose-dark); }
+
+  h2.section-title { font-family: var(--font-serif); font-size: 20px; margin-bottom: 4px; }
+  p.section-sub { font-size: 13px; color: var(--ink-3); margin-bottom: 16px; }
+
+  /* ─── Two column layout: list + favourites rail ─────────── */
+  .layout { display: grid; grid-template-columns: 1fr 280px; gap: 32px; align-items: start; }
+
+  /* ─── Editorial row cards ────────────────────────────────── */
+  .rows { display: flex; flex-direction: column; gap: 14px; }
+  .row-card {
+    display: flex; gap: 16px; background: var(--surface); border: 0.5px solid var(--border);
+    border-left: 4px solid transparent; border-radius: var(--radius-md); overflow: hidden;
+    box-shadow: var(--shadow-sm); cursor: pointer; transition: var(--transition); padding: 12px;
+  }
+  .row-card:hover { box-shadow: var(--shadow-md); border-color: var(--brand); border-left-color: var(--brand); }
+  .row-card.chosen { border-left-color: var(--amber); }
+  .row-thumb {
+    width: 120px; height: 96px; border-radius: var(--radius-sm); flex-shrink: 0; position: relative;
+  }
+  .row-thumb .heart {
+    position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border-radius: 50%;
+    background: rgba(255,255,255,0.92); display: flex; align-items: center; justify-content: center;
+    color: var(--ink-3); font-size: 11px;
+  }
+  .row-thumb .heart.on { color: var(--rose); }
+  .row-main { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+  .row-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .chosen-tag {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600;
+    color: var(--amber-dark); background: var(--amber-light); padding: 2px 8px; border-radius: 8px; margin-bottom: 4px;
+  }
+  .venue-name { font-size: 15px; font-weight: 500; }
+  .venue-meta { font-size: 12px; color: var(--ink-4); margin-top: 2px; }
+  .rating-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-4); margin-top: 6px; }
+  .stars { color: var(--amber); }
+  .price-tag { color: var(--ink-3); }
+  .tags { margin-top: 6px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag { padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 500; background: var(--brand-light); color: var(--brand-deep); }
+
+  .ss-pill {
+    display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0;
+    background: var(--rose-light); color: var(--rose-dark); font-size: 11px; font-weight: 600;
+    padding: 5px 10px 5px 6px; border-radius: 20px;
+  }
+  .ss-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--rose); }
+  .ss-pill.high .dot { background: var(--brand); }
+  .ss-pill.high { background: var(--brand-light); color: var(--brand-deep); }
+  .ss-pill.unrated { background: var(--surface-3); color: var(--ink-4); }
+  .ss-pill.unrated .dot { background: var(--ink-4); }
+
+  /* ─── Favourites rail (sticky sidebar) ───────────────────── */
+  .rail { position: sticky; top: 24px; background: var(--surface-2); border-radius: var(--radius-lg); padding: 18px; }
+  .rail h3 { font-family: var(--font-serif); font-size: 16px; margin-bottom: 2px; }
+  .rail .sub { font-size: 11.5px; color: var(--ink-3); margin-bottom: 14px; }
+  .rail-item { display: flex; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 0.5px solid var(--border); }
+  .rail-item:last-child { border-bottom: none; }
+  .rail-thumb { width: 44px; height: 44px; border-radius: var(--radius-sm); flex-shrink: 0; }
+  .rail-name { font-size: 12.5px; font-weight: 500; }
+  .rail-meta { font-size: 10.5px; color: var(--ink-4); margin-top: 1px; }
+  .rail-heart { margin-left: auto; color: var(--rose); font-size: 12px; }
+  .rail-empty-cta { display: block; text-align: center; font-size: 12px; color: var(--brand); margin-top: 10px; }
+
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .rail { position: static; }
+  }
+</style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <div class="brand">VibePicksJA</div>
+      <div class="note">Mockup — Layout B: Editorial Rows + Favourites Rail (not wired to live data)</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="annot">
+      <b>Concept:</b> denser, more scannable row-style listings (like The Infatuation / Eater city guides) instead
+      of image-heavy tiles — better for comparing many venues at once. SafeSpace becomes a colored pill next to the
+      rating (green = high trust, rose = lower, gray = unrated) instead of a score badge, and "site chosen" is a
+      left-edge accent stripe + small tag rather than a ribbon. Favourites live in a persistent sticky rail on the
+      right, always in view while browsing — no need to scroll to a shelf.
+    </div>
+
+    <h2 class="section-title">Browsing Kingston</h2>
+    <p class="section-sub">142 listings matched to your vibe</p>
+
+    <div class="layout">
+      <div class="rows">
+        <div class="row-card chosen">
+          <div class="row-thumb" style="background:linear-gradient(135deg,#1D9E75,#085041)">
+            <div class="heart on"><i class="fa-solid fa-heart"></i></div>
+          </div>
+          <div class="row-main">
+            <div class="row-top">
+              <div>
+                <span class="chosen-tag"><i class="fa-solid fa-star"></i> VibePicksJA chosen</span>
+                <div class="venue-name">Scotchies Jerk Centre</div>
+                <div class="venue-meta">Ocho Rios &middot; Restaurant &middot; Outdoor</div>
+              </div>
+              <span class="ss-pill high"><span class="dot"></span>SafeSpace 96</span>
+            </div>
+            <div class="rating-row">
+              <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              <span>4.9 &middot; 2,410 reviews</span>
+              <span class="price-tag">&middot; JMD 1,200+</span>
+            </div>
+            <div class="tags">
+              <span class="tag">Live music</span>
+              <span class="tag">Solo-friendly</span>
+              <span class="tag">Outdoor seating</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-card">
+          <div class="row-thumb" style="background:linear-gradient(135deg,#993556,#72243E)">
+            <div class="heart"><i class="fa-regular fa-heart"></i></div>
+          </div>
+          <div class="row-main">
+            <div class="row-top">
+              <div>
+                <div class="venue-name">Usain Bolt's Tracks &amp; Records</div>
+                <div class="venue-meta">New Kingston &middot; Restaurant</div>
+              </div>
+              <span class="ss-pill"><span class="dot"></span>SafeSpace 78</span>
+            </div>
+            <div class="rating-row">
+              <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+              <span>4.3 &middot; 980 reviews</span>
+              <span class="price-tag">&middot; JMD 2,000+</span>
+            </div>
+            <div class="tags"><span class="tag">Group friendly</span></div>
+          </div>
+        </div>
+
+        <div class="row-card">
+          <div class="row-thumb" style="background:linear-gradient(135deg,#378ADD,#0C447C)">
+            <div class="heart on"><i class="fa-solid fa-heart"></i></div>
+          </div>
+          <div class="row-main">
+            <div class="row-top">
+              <div>
+                <div class="venue-name">Hope Gardens Picnic Lawn</div>
+                <div class="venue-meta">Kingston 6 &middot; Park</div>
+              </div>
+              <span class="ss-pill high"><span class="dot"></span>SafeSpace 95</span>
+            </div>
+            <div class="rating-row">
+              <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              <span>4.8 &middot; 512 reviews</span>
+              <span class="price-tag">&middot; Free</span>
+            </div>
+            <div class="tags"><span class="tag">Family friendly</span></div>
+          </div>
+        </div>
+
+        <div class="row-card">
+          <div class="row-thumb" style="background:linear-gradient(135deg,#BA7517,#633806)">
+            <div class="heart"><i class="fa-regular fa-heart"></i></div>
+          </div>
+          <div class="row-main">
+            <div class="row-top">
+              <div>
+                <div class="venue-name">Fort Charles Lounge</div>
+                <div class="venue-meta">Port Royal &middot; Bar</div>
+              </div>
+              <span class="ss-pill"><span class="dot"></span>SafeSpace 71</span>
+            </div>
+            <div class="rating-row">
+              <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+              <span>4.1 &middot; 300 reviews</span>
+              <span class="price-tag">&middot; JMD 1,500+</span>
+            </div>
+            <div class="tags"><span class="tag">Waterfront</span></div>
+          </div>
+        </div>
+
+        <div class="row-card">
+          <div class="row-thumb" style="background:linear-gradient(135deg,#9B9B92,#6B6B64)">
+            <div class="heart"><i class="fa-regular fa-heart"></i></div>
+          </div>
+          <div class="row-main">
+            <div class="row-top">
+              <div>
+                <div class="venue-name">Half Moon Beach Bar</div>
+                <div class="venue-meta">Montego Bay &middot; Bar</div>
+              </div>
+              <span class="ss-pill unrated"><span class="dot"></span>Unrated</span>
+            </div>
+            <div class="rating-row">
+              <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+              <span>4.0 &middot; 88 reviews</span>
+              <span class="price-tag">&middot; JMD 1,800+</span>
+            </div>
+            <div class="tags"><span class="tag">Waterfront</span></div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="rail">
+        <h3>Saved for you</h3>
+        <div class="sub">4 favourited picks</div>
+
+        <div class="rail-item">
+          <div class="rail-thumb" style="background:linear-gradient(135deg,#993556,#72243E)"></div>
+          <div>
+            <div class="rail-name">Usain Bolt's Tracks</div>
+            <div class="rail-meta">New Kingston</div>
+          </div>
+          <i class="fa-solid fa-heart rail-heart"></i>
+        </div>
+        <div class="rail-item">
+          <div class="rail-thumb" style="background:linear-gradient(135deg,#378ADD,#0C447C)"></div>
+          <div>
+            <div class="rail-name">Hope Gardens</div>
+            <div class="rail-meta">Kingston 6</div>
+          </div>
+          <i class="fa-solid fa-heart rail-heart"></i>
+        </div>
+        <div class="rail-item">
+          <div class="rail-thumb" style="background:linear-gradient(135deg,#D85A30,#712B13)"></div>
+          <div>
+            <div class="rail-name">Redbones Blues Café</div>
+            <div class="rail-meta">Kingston 6</div>
+          </div>
+          <i class="fa-solid fa-heart rail-heart"></i>
+        </div>
+        <div class="rail-item">
+          <div class="rail-thumb" style="background:linear-gradient(135deg,#534AB7,#3C3489)"></div>
+          <div>
+            <div class="rail-name">Fort Charles Lounge</div>
+            <div class="rail-meta">Port Royal</div>
+          </div>
+          <i class="fa-solid fa-heart rail-heart"></i>
+        </div>
+        <a class="rail-empty-cta" href="#">View all saved &rarr;</a>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>
