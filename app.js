@@ -6,10 +6,17 @@
 'use strict';
 
 /* ─── Venue data ─────────────────────────────────────────────
-   Each venue object holds all data needed across all screens.
-   Replace or extend this array as real venue data is ingested.
+   Curated hero venues with local photos and hand-written editorial
+   copy — always shown first, and the only thing the homepage ever
+   draws from (see renderHomeMosaic/renderEditorialStrips below).
+   Real venue records are pulled from Airtable by a weekly GitHub
+   Actions workflow (.github/workflows/update-venues.yml, script in
+   scripts/fetch-airtable-venues.js) into venues.json, which this
+   file fetches and merges in behind these on load — see
+   fetchWeeklyVenues() and the Init block at the bottom. No
+   Airtable token is ever present client-side.
    ─────────────────────────────────────────────────────────── */
-const VENUES = [
+const CURATED_VENUES = [
   {
     id: 'broken-plate',
     name: 'Broken Plate Jamaica',
@@ -241,6 +248,13 @@ const VENUES = [
     occasion_scores: { chill: 0.30, celebrate: 0.92, date: 0.70, family: 0.05, work: 0.45, explore: 0.55 },
   },
 ];
+
+/* ─── Live venue array ───────────────────────────────────────
+   Starts as just the curated set; fetchWeeklyVenues() (Init block,
+   bottom of file) appends the weekly Airtable pull on top once it
+   loads. Browse/SafeSpace/quiz-results read this; the homepage
+   reads CURATED_VENUES directly instead, by design. ───────────── */
+let VENUES = [...CURATED_VENUES];
 
 /* ─── Quiz data ──────────────────────────────────────────────
    Each step defines type, key, question copy, and options.
@@ -924,8 +938,12 @@ function renderHomeMosaic(cat) {
 
   if (cat !== 'all') {
     /* Category filters just show a normal flowing grid of matches —
-       the hand-curated "All" sequence below is a homepage-only thing. */
-    const filtered = VENUES.filter(v => v.category === cat);
+       the hand-curated "All" sequence below is a homepage-only thing.
+       Scoped to CURATED_VENUES (not the merged VENUES) on purpose:
+       the homepage only ever shows the hand-picked set, regardless
+       of how large the Airtable catalog grows — Browse/SafeSpace/
+       quiz-results are where the full catalog belongs. */
+    const filtered = CURATED_VENUES.filter(v => v.category === cat);
     for (let i = 0; i < filtered.length; i += 3) {
       gridA.appendChild(buildMosaicBlock(filtered.slice(i, i + 3)));
     }
@@ -939,12 +957,14 @@ function renderHomeMosaic(cat) {
           (SafeSpace picks strip sits right after this, in the HTML)
        B. Scotchies Jerk Centre + Caymanas Park
           (Tastemaker picks strip sits right after this, in the HTML)
-       C. Everything else not already featured above */
-  const byId = id => VENUES.find(v => v.id === id);
+       C. Everything else not already featured above
+     All scoped to CURATED_VENUES — "everything else" means the
+     curated leftovers, never the Airtable catalog. */
+  const byId = id => CURATED_VENUES.find(v => v.id === id);
   const groupA = ['broken-plate', 'v2', 'v5'].map(byId).filter(Boolean);
   const groupB = ['v3', 'v6'].map(byId).filter(Boolean);
   const curatedIds = new Set([...groupA, ...groupB].map(v => v.id));
-  const rest = VENUES.filter(v => !curatedIds.has(v.id));
+  const rest = CURATED_VENUES.filter(v => !curatedIds.has(v.id));
 
   gridA.appendChild(buildMosaicBlock(groupA));
   gridA.appendChild(buildVideoBlock([TASTEMAKER_VIDEO_FEATURE]));
@@ -993,10 +1013,14 @@ function buildEditorialCard(v, type) {
 function renderEditorialStrips() {
   clearPhotoRotations('editorial');
 
+  /* Scoped to CURATED_VENUES, not the merged VENUES — these are
+     hand-picked editorial collections, not a live query, so an
+     Airtable venue that happens to have tastemaker/safespace set
+     shouldn't silently appear here. */
   const ssStrip = el('home-ss-strip');
   if (ssStrip) {
     ssStrip.innerHTML = '';
-    VENUES.filter(v => v.safespace)
+    CURATED_VENUES.filter(v => v.safespace)
       .sort((a, b) => b.safespace - a.safespace)
       .forEach(v => ssStrip.appendChild(buildEditorialCard(v, 'ss')));
   }
@@ -1004,7 +1028,7 @@ function renderEditorialStrips() {
   const tmStrip = el('home-tm-strip');
   if (tmStrip) {
     tmStrip.innerHTML = '';
-    VENUES.filter(v => v.tastemaker)
+    CURATED_VENUES.filter(v => v.tastemaker)
       .forEach(v => tmStrip.appendChild(buildEditorialCard(v, 'tm')));
   }
 }
@@ -1061,6 +1085,23 @@ function openDetail(id) {
   renderDetail(v);
   showScreen('detail');
 }
+
+/* Display names for every parish slug the Airtable data can
+   actually produce (parish.toLowerCase().replace ' '→'-' in
+   fetch-airtable-venues.js). Used in place of a binary "kingston ?
+   Kingston & St. Andrew : St. Catherine" check, which would
+   mislabel every other parish now that real multi-parish data
+   flows in. */
+const PARISH_NAMES = {
+  'kingston':      'Kingston & St. Andrew',
+  'st-andrew':     'Kingston & St. Andrew',
+  'st-catherine':  'St. Catherine',
+  'st-ann':        'St. Ann',
+  'st-elizabeth':  'St. Elizabeth',
+  'st-james':      'St. James',
+  'westmoreland':  'Westmoreland',
+  'hanover':       'Hanover',
+};
 
 const FEATURE_ICONS = [
   { match: ['credit', 'card', 'cash'], icon: 'fa-solid fa-credit-card' },
@@ -1228,13 +1269,23 @@ function renderDetail(v) {
       <div class="dg-item">
         <div class="dg-lbl">Parish</div>
         <div class="dg-val">${v.location.split(',').pop().trim()}</div>
-        <div class="dg-sub">${v.parish === 'kingston' ? 'Kingston & St. Andrew' : 'St. Catherine'}</div>
+        <div class="dg-sub">${PARISH_NAMES[v.parish] || v.parish}</div>
       </div>
       <div class="dg-item">
         <div class="dg-lbl">Category</div>
         <div class="dg-val">${v.type}</div>
         <div class="dg-sub">${v.tastemaker ? 'Tastemaker verified' : 'Community listed'}</div>
       </div>
+      ${v.phone ? `
+      <div class="dg-item">
+        <div class="dg-lbl">Phone</div>
+        <div class="dg-val"><a href="tel:${v.phone.replace(/[^+\d]/g, '')}" style="color:inherit;text-decoration:none">${v.phone}</a></div>
+      </div>` : ''}
+      ${v.opening_hours ? `
+      <div class="dg-item">
+        <div class="dg-lbl">Hours</div>
+        <div class="dg-val" style="font-weight:400;font-size:13px;line-height:1.6">${v.opening_hours.split(' | ').join('<br>')}</div>
+      </div>` : ''}
     </div>
 
     <p style="font-size:14px;color:var(--ink-2);line-height:1.75;margin-bottom:20px;font-weight:300;">${v.description}</p>
@@ -1530,8 +1581,56 @@ function showResults() {
   if (browseTitle) browseTitle.textContent = 'Your vibe results';
 }
 
+/* Fetches venues.json — a same-origin static file regenerated
+   weekly by .github/workflows/update-venues.yml (which runs
+   scripts/fetch-airtable-venues.js against Airtable using a GitHub
+   Actions secret). No Airtable token is ever present here or
+   shipped to the browser. Falls back to an empty array — and so
+   to curated-only venues — if the file is missing or malformed. */
+async function fetchWeeklyVenues() {
+  try {
+    const res = await fetch('venues.json', { cache: 'no-store' });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch (err) {
+    console.error('VibePicksJA: Could not load venues.json:', err);
+    return [];
+  }
+}
+
+/* Updates the hero stats strip with the real merged venue count */
+function updateStatsCount(total) {
+  const numEl = document.querySelector('.stat-num[data-count-to]');
+  if (numEl) {
+    numEl.setAttribute('data-count-to', total);
+    numEl.dataset.counted = ''; // reset so counter re-runs
+    numEl.textContent = '0+';
+  }
+}
+
 /* ─── Init ───────────────────────────────────────────────────*/
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // Show home immediately with curated venues so the page is
+  // never blank while venues.json loads
+  VENUES = [...CURATED_VENUES];
   showScreen('home');
   initStatCounters();
+
+  const weeklyVenues = await fetchWeeklyVenues();
+  if (weeklyVenues.length > 0) {
+    // Keep curated venues at top (they have local photos + editorial copy)
+    const curatedIds = new Set(CURATED_VENUES.map(v => v.id));
+    const fresh = weeklyVenues.filter(v => !curatedIds.has(v.id));
+    VENUES = [...CURATED_VENUES, ...fresh];
+
+    updateStatsCount(VENUES.length);
+    initStatCounters(); // re-run counter animation with new target
+
+    // Re-render whatever screen is currently showing
+    const screen = State.currentScreen;
+    if (screen === 'home')   renderHomeMosaic(State.activeFilters.home   || 'all');
+    if (screen === 'browse') renderBrowseCards(State.activeFilters.browse || 'all');
+    if (screen === 'ss')     renderSSCards();
+  }
 });
